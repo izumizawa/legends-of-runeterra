@@ -5,8 +5,8 @@ import ProjetoFinal.ItensAdicionais.Status;
 public class Seguidores extends Carta {
 	Status valoresCartaAtual;
 
-	public Seguidores(Status carta) {
-		super(carta);
+	public Seguidores(String nome,Status carta) {
+		super(nome, carta);
 		copiarStatus(carta);
 	}
 	
@@ -26,6 +26,7 @@ public class Seguidores extends Carta {
 		valoresCartaAtual.subtrairVida(dano);
 	}
 	
-	
-
+	public int verVidaAtual() {
+		return valoresCartaAtual.verDefesa();
+	}
 }
