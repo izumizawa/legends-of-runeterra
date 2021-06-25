@@ -36,4 +36,10 @@ public class Seguidores extends Carta {
 	public int verVidaAtual() {
 		return valoresCartaAtual.verDefesa();
 	}
+	
+	//Aumenta o dano atual em n
+	void definirDanoAtual(int danoBonus) {
+		int dano = valoresCartaAtual.verAtaque();
+		valoresCartaAtual.definirDano(dano+danoBonus);
+	}
 }

@@ -16,6 +16,7 @@ public class Campeoes extends Seguidores{
 	}
 	
 	//Prototipo da evolução do personagem
+	//Estou usando o tipo como int, mas podemos criar um enum
 	@Override
 	public void atacarInimigo(Seguidores inimigo) {
 		super.atacarInimigo(inimigo);
@@ -26,6 +27,7 @@ public class Campeoes extends Seguidores{
 		Boolean evoluiu = verificaEvolucao();
 		if(evoluiu) {
 			definirDano(dano + nCondicao);
+			definirDanoAtual(nCondicao);
 		}
 	}
 	
