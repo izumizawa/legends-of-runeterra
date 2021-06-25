@@ -1,6 +1,7 @@
 package ProjetoFinal.Carta;
 
 import ProjetoFinal.ItensAdicionais.Status;
+import ProjetoFinal.Jogador.Jogador;
 
 public class Carta {
 	private String nome;
@@ -9,6 +10,11 @@ public class Carta {
 	public Carta(String nomeCarta,Status carta) {
 		valoresCarta = carta;
 		nome = nomeCarta;
+	}
+	
+	public void atacarInimigo(Seguidores inimigo) {
+		int dano = verDano();
+		inimigo.sofrerDano(dano);
 	}
 	
 	public String verNome() {
@@ -27,4 +33,7 @@ public class Carta {
 		return valoresCarta.verDefesa();
 	}
 	
+	void definirDano(int dano) {
+		valoresCarta.definirDano(dano);
+	}
 }

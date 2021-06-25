@@ -1,6 +1,7 @@
 package ProjetoFinal.Carta;
 
 import ProjetoFinal.ItensAdicionais.Status;
+import ProjetoFinal.Jogador.Jogador;
 
 public class Seguidores extends Carta {
 	Status valoresCartaAtual;
@@ -22,7 +23,13 @@ public class Seguidores extends Carta {
 		inimigo.sofrerDano(dano);
 	}
 	
-	private void sofrerDano(int dano) {
+	//Implementando ataque direto
+	public void atacarInimigo(Jogador player) {
+		int dano = verDano();
+		player.sofrerDano(dano);
+	}
+	
+	void sofrerDano(int dano) {
 		valoresCartaAtual.subtrairVida(dano);
 	}
 	
