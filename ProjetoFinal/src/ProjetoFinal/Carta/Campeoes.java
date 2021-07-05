@@ -17,17 +17,29 @@ public class Campeoes extends Seguidores{
 	
 	//Prototipo da evolução do personagem
 	//Estou usando o tipo como int, mas podemos criar um enum
+	
+	
 	@Override
 	public void atacarInimigo(Seguidores inimigo) {
 		super.atacarInimigo(inimigo);
-		int dano = verDano();
 		if(tipo == 1) {
+			int dano = verDano();
 			andamentoCondicao += dano;
 		}
-		Boolean evoluiu = verificaEvolucao();
-		if(evoluiu) {
-			definirDano(dano + nCondicao);
-			definirDanoAtual(nCondicao);
+		else if(tipo == 2) {
+			int vidaInimigo = inimigo.verVidaAtual();
+			if(vidaInimigo<=0) {
+				andamentoCondicao+=1;
+			}
+		}
+		evoluir();
+	}
+	
+	@Override 
+	public void sofrerDano(int dano){
+		super.sofrerDano(dano);
+		if(tipo == 3) {
+			andamentoCondicao+= dano;
 		}
 	}
 	
@@ -39,9 +51,21 @@ public class Campeoes extends Seguidores{
 		return false;
 	}
 	
+	private void evoluir() {
+		if(verificaEvolucao()) {
+			if(tipo ==1) {
+				definirDanoAtual(nCondicao);
+			}
+			else if(tipo ==2 ) {
+				definirVidaAtual(nCondicao);
+			}
+		}
+	}
+	
 	public Boolean verEvoluido() {
 		return evoluido;
 	}
+	
 	
 
 }

@@ -45,4 +45,8 @@ public class Status {
 	public void definirDano(int dano) {
 		pontosAtaque = dano;
 	}
+	
+	public void definirVida(int vida) {
+		pontosDefesa = vida;
+	}
 }

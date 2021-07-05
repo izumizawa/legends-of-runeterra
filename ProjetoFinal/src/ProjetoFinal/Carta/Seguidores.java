@@ -29,7 +29,7 @@ public class Seguidores extends Carta {
 		player.sofrerDano(dano);
 	}
 	
-	void sofrerDano(int dano) {
+	public void sofrerDano(int dano) {
 		valoresCartaAtual.subtrairVida(dano);
 	}
 	
@@ -41,5 +41,10 @@ public class Seguidores extends Carta {
 	void definirDanoAtual(int danoBonus) {
 		int dano = valoresCartaAtual.verAtaque();
 		valoresCartaAtual.definirDano(dano+danoBonus);
+	}
+	
+	void definirVidaAtual(int vidaBonus) {
+		int vida = valoresCartaAtual.verDefesa();
+		valoresCartaAtual.definirVida(vida + vidaBonus);
 	}
 }

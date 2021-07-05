@@ -35,7 +35,6 @@ public class Tabuleiro {
 				this.cartas_evocadas2.add(carta_abaixada);
 			}
 		}
-		
 		else {
 			return;
 		}
