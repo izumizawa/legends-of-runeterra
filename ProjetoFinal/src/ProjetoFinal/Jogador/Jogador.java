@@ -34,6 +34,15 @@ public class Jogador {
 	public void definirVida(int vida) {
 		this.vida = vida;
 	}
+	
+	//Nathan - Adicionei um metodo para ataque direto.
+	public void sofrerDano(int dano) {
+		vida = vida - dano;
+		if(vida <0) {
+			vida = 0;
+		}
+	}
+	
 
 	public int verMana() {
 		return mana;
