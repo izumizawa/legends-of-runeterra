@@ -20,7 +20,7 @@ public class Jogador {
 		this.vida = 20;
 		this.mana = 0;
 		this.deck = deck;
-		iniciarCartasNaMao(deck);
+	//	iniciarCartasNaMao(deck);
 	}
 
 	public String verNome() {
@@ -56,21 +56,30 @@ public class Jogador {
 		return deck;
 	}
 	
-	private void iniciarCartasNaMao(Deck deck) {
+	public void iniciarCartasNaMao() {
 		this.cartasNaMao = new ArrayList<Carta>();
 		Random gerador = new Random();
 		int i = 0;
 		while (i < 4) {
 			int cartaAleatoria = gerador.nextInt(40); // 0 a 39
-			if (!cartasNaMao.contains(deck.verCartas().get(cartaAleatoria))) {
-				Carta carta = deck.verCartas().get(cartaAleatoria);
+			if (!cartasNaMao.contains(this.deck.verCartas().get(cartaAleatoria))) {
+				Carta carta = this.deck.verCartas().get(cartaAleatoria);
 				this.cartasNaMao.add(carta);
-				deck.removerCarta(carta);
+				this.deck.removerCarta(carta);
 				i++;
 			}
 		}
 	}
 
+	
+	public void reiniciarCartasNaMao(int quantidade) {
+		//Método para redefinir as cartas na mão do jogador
+		//Cria uma nova lista de cartas, copia as cartasNaMao para a lista
+		//Pega as novas cartas
+		//Relocar as cartas tiradas de volta no baralho
+	}
+	
+	
 	public List<Carta> verCartasNaMao() {
 		return cartasNaMao;
 	}

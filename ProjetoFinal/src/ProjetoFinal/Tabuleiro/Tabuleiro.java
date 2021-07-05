@@ -2,6 +2,7 @@ package ProjetoFinal.Tabuleiro;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Scanner;
 
 import ProjetoFinal.Carta.Carta;
 import ProjetoFinal.Jogador.Jogador;
@@ -64,8 +65,52 @@ public class Tabuleiro {
 		Collections.shuffle(deck);
 	}
 	
+	public void IniciaJogo() {
+		jogador1.iniciarCartasNaMao();
+		jogador2.iniciarCartasNaMao();
+		
+		System.out.println("Cartas de "+this.jogador1.verNome()+":");
+		imprimeCartasdaMao(jogador1);
+		
+		System.out.println("Cartas de "+this.jogador2.verNome()+":");
+		imprimeCartasdaMao(jogador2);
+		
+		reiniciaMao(jogador1);
+		reiniciaMao(jogador2);
+		
+	}
+
+	
 	public void imprimeTabuleiro() {
 		
+	}
+	
+	private void imprimeCartasdaMao(Jogador jogador) {
+		
+		for(int i = 0; i < jogador.verCartasNaMao().size(); i ++) {
+			System.out.println("Nome: "+jogador.verCartasNaMao().get(i).verNome());
+			System.out.println("Custo de Mana: "+jogador.verCartasNaMao().get(i).verCustoMana());
+			System.out.println("Vida Total: "+jogador.verCartasNaMao().get(i).verVidaTotal());
+			System.out.println("Dano: "+jogador.verCartasNaMao().get(i).verDano());
+			System.out.println("");
+		}
+	}
+	
+	private void reiniciaMao(Jogador jogador) {
+
+		@SuppressWarnings("resource")
+		Scanner scan = new Scanner(System.in);
+		System.out.println(jogador.verNome()+" deseja fazer pegar novas cartas? s/n");
+		String resposta = scan.next();
+		
+		
+		if(resposta.equals("s")) {
+			System.out.println("Quantas cartas deseja trocar?");
+			int quant = scan.nextInt();
+			jogador.reiniciarCartasNaMao(quant);
+		}
+		
+		//scan.close();
 	}
 	
 	
