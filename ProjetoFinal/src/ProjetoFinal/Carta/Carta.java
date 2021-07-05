@@ -15,15 +15,15 @@ public class Carta {
 		return nome;
 	}
 	
-	int verCustoMana() {
+	public int verCustoMana() {
 		return valoresCarta.verMana();
 	}
 	
-	int verDano() {
+	public int verDano() {
 		return valoresCarta.verAtaque();
 	}
 	
-	int verVidaTotal() {
+	public int verVidaTotal() {
 		return valoresCarta.verDefesa();
 	}
 	
