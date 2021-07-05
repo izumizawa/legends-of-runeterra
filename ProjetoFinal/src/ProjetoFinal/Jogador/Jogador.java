@@ -77,6 +77,25 @@ public class Jogador {
 		//Cria uma nova lista de cartas, copia as cartasNaMao para a lista
 		//Pega as novas cartas
 		//Relocar as cartas tiradas de volta no baralho
+		ArrayList<Carta> novasCartasNaMao = new ArrayList<Carta>();
+		Random gerador = new Random();
+		int i=0;
+		while(i<4) {
+			int cartaAleatoria = gerador.nextInt(40);
+			Carta carta = deck.verCartas().get(cartaAleatoria);
+			if(!novasCartasNaMao.contains(carta)) {
+				novasCartasNaMao.add(carta);
+				deck.removerCarta(carta);
+				i++;
+			}
+		}
+		
+		for(i=0; i<cartasNaMao.size();i++) {
+			Carta carta = cartasNaMao.get(i);
+			deck.adicionarCarta(carta);
+			cartasNaMao.remove(carta);
+		}
+		cartasNaMao = novasCartasNaMao;
 	}
 	
 	
