@@ -133,20 +133,27 @@ public class Tabuleiro {
 	
 	
 	private boolean consomeMana(Jogador jogador, Carta carta_jogada) {
-			
-		if((carta_jogada.verCustoMana() <= jogador.verMana()) && (verificaCartaEvocavel(carta_jogada))) {
-			int mana_atualizada = (jogador.verMana() - carta_jogada.verCustoMana());
+		int custoMana = carta_jogada.verCustoMana();
+		int manaJogador = jogador.verMana();
+		int manaFeitico = jogador.verManaFeitico();
+		boolean evocavel = verificaCartaEvocavel(carta_jogada);
+		if((custoMana <= manaJogador) && evocavel) {
+			int mana_atualizada = (manaJogador - custoMana);
 			jogador.definirMana(mana_atualizada);
 			return true;
 		}
-		
-		else if(!(verificaCartaEvocavel(carta_jogada)) && (carta_jogada.verCustoMana() <= (jogador.verMana() + jogador.verManaFeitico()))) {
-			
+		else if( !evocavel && (custoMana <= manaFeitico)) {
+			int mana_atualizada = manaFeitico - custoMana;
+			jogador.definirManaFeitico(mana_atualizada);
+			return true;
 		}
-		
-		else {
-			return false;
+		else if(!evocavel && (custoMana <= (manaJogador + manaFeitico))){
+			int manaNormalUsada = custoMana - manaFeitico;
+			jogador.definirManaFeitico(0);
+			int manaNormalAtualizada = manaJogador - manaNormalUsada;
+			jogador.definirMana(manaNormalAtualizada);
 		}
+		return false;
 	}
 	
 	
@@ -154,7 +161,7 @@ public class Tabuleiro {
 		if(carta_recebida instanceof Feiticos) {
 			return false;
 		}
-		else return true;
+		return true;
 	}
 	
 	private Jogador jogadorAtacante(Jogador jogador_a, Jogador jogador_b) {	
