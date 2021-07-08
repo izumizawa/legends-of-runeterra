@@ -26,12 +26,13 @@ public class Tabuleiro {
 	
 	
 	
-	public Jogador verJogador() {
+	public Jogador verJogador1() {
 		return this.jogador1;
 	}
 	
-	
-	
+	public Jogador verJogador2() {
+		return this.jogador2;
+	}
 	
 	// Adiciona a carta à mesa. Explicitar se é jogador 1 ou 2.
 	public boolean adcCartasEvocadas(Carta carta_abaixada, Jogador jogador) {
@@ -96,7 +97,7 @@ public class Tabuleiro {
 		Jogador jogador_ataq = jogadorAtacante(this.jogador1, this.jogador2);
 		Jogador jogador_def = jogadorDefensor(this.jogador1, this.jogador2);
 		
-		
+		turnoJogada(jogador_ataq);
 		
 	}
 	
@@ -105,6 +106,30 @@ public class Tabuleiro {
 	public void imprimeTabuleiro() {
 		
 	}
+	
+	
+	private void turnoAtaque(Jogador atacante) {
+		
+		System.out.println("Deseja atacar? s/n");
+		String resposta = leInformacaoStr();
+		int numero_carta = 0;
+		
+		if(resposta.equals("s")) {
+			
+			System.out.println("Escolha o n�mero das cartas para colocar no campo de batalha!");
+			
+			while() {
+				
+			}
+			
+			
+			
+			
+		}
+		
+		
+	}
+	
 	
 	
 	private void turnoJogada(Jogador jogador) {
@@ -157,8 +182,7 @@ public class Tabuleiro {
 		}
 		else {
 			return cartas_evocadas2;
-		}
-		
+		}		
 	}
 	
 	private boolean consomeMana(Jogador jogador, Carta carta_jogada) {
@@ -184,8 +208,7 @@ public class Tabuleiro {
 		}
 		return false;
 	}
-	
-	
+		
 	private boolean verificaCartaEvocavel(Carta carta_recebida) {
 		if(carta_recebida instanceof Feiticos) {
 			return false;
