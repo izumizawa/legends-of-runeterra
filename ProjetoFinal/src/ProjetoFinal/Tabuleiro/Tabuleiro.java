@@ -33,22 +33,22 @@ public class Tabuleiro {
 	
 	
 	
-	// Adiciona a carta à mesa. Explicitar se é jogador 1 ou 2.
-	public void adcCartasEvocadas(Carta carta_abaixada, Jogador jogador) {
+	// Adiciona a carta Ã  mesa. Explicitar se Ã© jogador 1 ou 2.
+	public boolean adcCartasEvocadas(Carta carta_abaixada, Jogador jogador) {
 		if(jogador.equals(jogador1)) {
 			if(checaNumeroCartasEvocadas(this.cartas_evocadas1.size(), 1)) {
 				this.cartas_evocadas1.add(carta_abaixada);
+				return true;
 			}
 		}
 		
 		else if(jogador.equals(jogador2)) {
 			if(checaNumeroCartasEvocadas(this.cartas_evocadas2.size(), 1)) {
 				this.cartas_evocadas2.add(carta_abaixada);
+				return true;
 			}
 		}
-		else {
-			return;
-		}
+		return false;
 	}
 	
 	//Remove carta da mesa.
@@ -107,27 +107,57 @@ public class Tabuleiro {
 	}
 	
 	
-	private void turnoAtacante(Jogador atacante) {
-		atacante.comprarCarta();
+	private void turnoJogada(Jogador jogador) {
+		jogador.comprarCarta();
 		
-		System.out.println("Informe o número da carta que deseja jogar: ");
+		boolean imprime_mao = true;													//Decisão para imprimir a mao do jogador
+		int carta_escolhida = 0;													//Numero da carta escolhida
+		ArrayList <Carta> cartas_evocadas = encontraCartasEvocadas(jogador);		//Mesa do jogador
 		
-		imprimeCartasdaMao(atacante);
-		System.out.println("PULAR: Insira qualquer outro número");
-		
-		int carta_escolhida = (leInformacaoInt() - 1);
-		
-		if((carta_escolhida >= atacante.verCartasNaMao().size()) || carta_escolhida == 0) {
-			return;
-		}
-		
-		else {		
-			if(verificaCartaEvocavel(atacante.verCartasNaMao().get(carta_escolhida))) {
-				adcCartasEvocadas(atacante.verCartasNaMao().get(carta_escolhida), atacante); 
+		while(imprime_mao) {			
+			System.out.println("Informe o nÃºmero da carta que deseja jogar: ");
+			imprimeCartasdaMao(jogador);
+			System.out.println("PULAR: Digite 0");
+			carta_escolhida = (leInformacaoInt() - 1);
+			Carta carta = jogador.verCartasNaMao().get(carta_escolhida);			//Objeto carta escolhido
+			
+			if(checaNumeroCartasEvocadas(cartas_evocadas.size(), 1)) {
+				if((carta_escolhida == -1) || (consomeMana(jogador, carta))) {
+					imprime_mao = false;
+				}	
 			}
-		//	atacante.verCartasNaMao().get(carta_escolhida).aplicarEfeito(this, atacante);	//Aplica efeito da carta
+			
+			else {
+				if(!verificaCartaEvocavel(carta)) {									//Se for um feitiço, a carta poderá ser jogada
+					if((carta_escolhida == -1) || (consomeMana(jogador, carta))) {
+						imprime_mao = false;
+					}	
+				}
+			}				
 		}
-		
+				
+		if(carta_escolhida != -1) {
+			if(verificaCartaEvocavel(jogador.verCartasNaMao().get(carta_escolhida))) { 
+				if(adcCartasEvocadas(jogador.verCartasNaMao().get(carta_escolhida), jogador)) {
+					//atacante.verCartasNaMao().get(carta_escolhida).aplicarEfeito(this, atacante);		//adiciona efeito
+				}
+			}
+			
+			else {
+				//atacante.verCartasNaMao().get(carta_escolhida).aplicarEfeito(this, atacante);		//adiciona feitiço
+			}
+		}			
+	}
+	
+	
+	
+	public ArrayList<Carta> encontraCartasEvocadas(Jogador jogador) {	
+		if(jogador.equals(this.jogador1)) {
+			return cartas_evocadas1;
+		}
+		else {
+			return cartas_evocadas2;
+		}
 		
 	}
 	
@@ -217,7 +247,7 @@ public class Tabuleiro {
 		//scan.close();
 	}
 		
-	//Valida o número de cartas na mesa.
+	//Valida o nÃºmero de cartas na mesa.
 	private boolean checaNumeroCartasEvocadas(int numero_cartas, int tipo) {
 		if(tipo == 1) {
 			if(numero_cartas < 6) {
