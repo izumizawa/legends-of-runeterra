@@ -131,7 +131,6 @@ public class Tabuleiro {
 		
 	}
 	
-	
 	private boolean consomeMana(Jogador jogador, Carta carta_jogada) {
 		int custoMana = carta_jogada.verCustoMana();
 		int manaJogador = jogador.verMana();
