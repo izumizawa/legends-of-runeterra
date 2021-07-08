@@ -33,7 +33,7 @@ public class Tabuleiro {
 	
 	
 	
-	// Adiciona a carta à mesa. Explicitar se é jogador 1 ou 2.
+	// Adiciona a carta Ã  mesa. Explicitar se Ã© jogador 1 ou 2.
 	public void adcCartasEvocadas(Carta carta_abaixada, Jogador jogador) {
 		if(jogador.equals(jogador1)) {
 			if(checaNumeroCartasEvocadas(this.cartas_evocadas1.size(), 1)) {
@@ -110,12 +110,27 @@ public class Tabuleiro {
 	private void turnoAtacante(Jogador atacante) {
 		atacante.comprarCarta();
 		
-		System.out.println("Informe o número da carta que deseja jogar: ");
+		boolean imprime_mao = true;
+		int carta_escolhida = 0;
 		
-		imprimeCartasdaMao(atacante);
-		System.out.println("PULAR: Insira qualquer outro número");
+		while(imprime_mao) {
+			
+			System.out.println("Informe o nÃºmero da carta que deseja jogar: ");
+			imprimeCartasdaMao(atacante);
+			System.out.println("PULAR: Digite 0");
+			carta_escolhida = (leInformacaoInt() - 1);
+			int custo_de_mana = atacante.verCartasNaMao().get(carta_escolhida).verCustoMana();
+			
+			
+			if((carta_escolhida == 0) || (custo_de_mana) ) {
+				
+			}
+			
+		}
 		
-		int carta_escolhida = (leInformacaoInt() - 1);
+		
+		
+
 		
 		if((carta_escolhida >= atacante.verCartasNaMao().size()) || carta_escolhida == 0) {
 			return;
@@ -218,7 +233,7 @@ public class Tabuleiro {
 		//scan.close();
 	}
 		
-	//Valida o número de cartas na mesa.
+	//Valida o nÃºmero de cartas na mesa.
 	private boolean checaNumeroCartasEvocadas(int numero_cartas, int tipo) {
 		if(tipo == 1) {
 			if(numero_cartas < 6) {
