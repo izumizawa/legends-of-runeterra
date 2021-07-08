@@ -33,7 +33,7 @@ public class Tabuleiro {
 	
 	
 	
-	// Adiciona a carta à mesa. Explicitar se é jogador 1 ou 2.
+	// Adiciona a carta Ã  mesa. Explicitar se Ã© jogador 1 ou 2.
 	public void adcCartasEvocadas(Carta carta_abaixada, Jogador jogador) {
 		if(jogador.equals(jogador1)) {
 			if(checaNumeroCartasEvocadas(this.cartas_evocadas1.size(), 1)) {
@@ -115,7 +115,7 @@ public class Tabuleiro {
 		
 		while(imprime_mao) {
 			
-			System.out.println("Informe o número da carta que deseja jogar: ");
+			System.out.println("Informe o nÃºmero da carta que deseja jogar: ");
 			imprimeCartasdaMao(atacante);
 			System.out.println("PULAR: Digite 0");
 			carta_escolhida = (leInformacaoInt() - 1);
@@ -148,20 +148,27 @@ public class Tabuleiro {
 	
 	
 	private boolean consomeMana(Jogador jogador, Carta carta_jogada) {
-			
-		if((carta_jogada.verCustoMana() <= jogador.verMana()) && (verificaCartaEvocavel(carta_jogada))) {
-			int mana_atualizada = (jogador.verMana() - carta_jogada.verCustoMana());
+		int custoMana = carta_jogada.verCustoMana();
+		int manaJogador = jogador.verMana();
+		int manaFeitico = jogador.verManaFeitico();
+		boolean evocavel = verificaCartaEvocavel(carta_jogada);
+		if((custoMana <= manaJogador) && evocavel) {
+			int mana_atualizada = (manaJogador - custoMana);
 			jogador.definirMana(mana_atualizada);
 			return true;
 		}
-		
-		else if(!(verificaCartaEvocavel(carta_jogada)) && (carta_jogada.verCustoMana() <= (jogador.verMana() + jogador.verManaFeitico()))) {
+		else if( !evocavel && (custoMana <= manaFeitico)) {
+			int mana_atualizada = manaFeitico - custoMana;
+			jogador.definirManaFeitico(mana_atualizada);
 			return true;
 		}
-		
-		else {
-			return false;
+		else if(!evocavel && (custoMana <= (manaJogador + manaFeitico))){
+			int manaNormalUsada = custoMana - manaFeitico;
+			jogador.definirManaFeitico(0);
+			int manaNormalAtualizada = manaJogador - manaNormalUsada;
+			jogador.definirMana(manaNormalAtualizada);
 		}
+		return false;
 	}
 	
 	
@@ -169,7 +176,7 @@ public class Tabuleiro {
 		if(carta_recebida instanceof Feiticos) {
 			return false;
 		}
-		else return true;
+		return true;
 	}
 	
 	private Jogador jogadorAtacante(Jogador jogador_a, Jogador jogador_b) {	
@@ -226,7 +233,7 @@ public class Tabuleiro {
 		//scan.close();
 	}
 		
-	//Valida o número de cartas na mesa.
+	//Valida o nÃºmero de cartas na mesa.
 	private boolean checaNumeroCartasEvocadas(int numero_cartas, int tipo) {
 		if(tipo == 1) {
 			if(numero_cartas < 6) {
