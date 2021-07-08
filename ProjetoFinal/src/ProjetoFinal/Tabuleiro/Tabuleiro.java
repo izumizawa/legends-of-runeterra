@@ -34,21 +34,21 @@ public class Tabuleiro {
 	
 	
 	// Adiciona a carta Ã  mesa. Explicitar se Ã© jogador 1 ou 2.
-	public void adcCartasEvocadas(Carta carta_abaixada, Jogador jogador) {
+	public boolean adcCartasEvocadas(Carta carta_abaixada, Jogador jogador) {
 		if(jogador.equals(jogador1)) {
 			if(checaNumeroCartasEvocadas(this.cartas_evocadas1.size(), 1)) {
 				this.cartas_evocadas1.add(carta_abaixada);
+				return true;
 			}
 		}
 		
 		else if(jogador.equals(jogador2)) {
 			if(checaNumeroCartasEvocadas(this.cartas_evocadas2.size(), 1)) {
 				this.cartas_evocadas2.add(carta_abaixada);
+				return true;
 			}
 		}
-		else {
-			return;
-		}
+		return false;
 	}
 	
 	//Remove carta da mesa.
@@ -107,45 +107,59 @@ public class Tabuleiro {
 	}
 	
 	
-	private void turnoAtacante(Jogador atacante) {
-		atacante.comprarCarta();
+	private void turnoJogada(Jogador jogador) {
+		jogador.comprarCarta();
 		
-		boolean imprime_mao = true;
-		int carta_escolhida = 0;
+		boolean imprime_mao = true;													//Decisão para imprimir a mao do jogador
+		int carta_escolhida = 0;													//Numero da carta escolhida
+		ArrayList <Carta> cartas_evocadas = encontraCartasEvocadas(jogador);		//Mesa do jogador
 		
-		while(imprime_mao) {
-			
+		while(imprime_mao) {			
 			System.out.println("Informe o nÃºmero da carta que deseja jogar: ");
-			imprimeCartasdaMao(atacante);
+			imprimeCartasdaMao(jogador);
 			System.out.println("PULAR: Digite 0");
 			carta_escolhida = (leInformacaoInt() - 1);
-			int custo_de_mana = atacante.verCartasNaMao().get(carta_escolhida).verCustoMana();
+			Carta carta = jogador.verCartasNaMao().get(carta_escolhida);			//Objeto carta escolhido
 			
+			if(checaNumeroCartasEvocadas(cartas_evocadas.size(), 1)) {
+				if((carta_escolhida == -1) || (consomeMana(jogador, carta))) {
+					imprime_mao = false;
+				}	
+			}
 			
-			if((carta_escolhida == 0) || (custo_de_mana) ) {
+			else {
+				if(!verificaCartaEvocavel(carta)) {									//Se for um feitiço, a carta poderá ser jogada
+					if((carta_escolhida == -1) || (consomeMana(jogador, carta))) {
+						imprime_mao = false;
+					}	
+				}
+			}				
+		}
 				
+		if(carta_escolhida != -1) {
+			if(verificaCartaEvocavel(jogador.verCartasNaMao().get(carta_escolhida))) { 
+				if(adcCartasEvocadas(jogador.verCartasNaMao().get(carta_escolhida), jogador)) {
+					//atacante.verCartasNaMao().get(carta_escolhida).aplicarEfeito(this, atacante);		//adiciona efeito
+				}
 			}
 			
-		}
-		
-		
-		
-
-		
-		if((carta_escolhida >= atacante.verCartasNaMao().size()) || carta_escolhida == 0) {
-			return;
-		}
-		
-		else {		
-			if(verificaCartaEvocavel(atacante.verCartasNaMao().get(carta_escolhida))) {
-				adcCartasEvocadas(atacante.verCartasNaMao().get(carta_escolhida), atacante); 
+			else {
+				//atacante.verCartasNaMao().get(carta_escolhida).aplicarEfeito(this, atacante);		//adiciona feitiço
 			}
-		//	atacante.verCartasNaMao().get(carta_escolhida).aplicarEfeito(this, atacante);	//Aplica efeito da carta
-		}
-		
-		
+		}			
 	}
 	
+	
+	
+	public ArrayList<Carta> encontraCartasEvocadas(Jogador jogador) {	
+		if(jogador.equals(this.jogador1)) {
+			return cartas_evocadas1;
+		}
+		else {
+			return cartas_evocadas2;
+		}
+		
+	}
 	
 	private boolean consomeMana(Jogador jogador, Carta carta_jogada) {
 		int custoMana = carta_jogada.verCustoMana();
