@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Scanner;
 
 import ProjetoFinal.Carta.Carta;
+import ProjetoFinal.Carta.Feiticos;
 import ProjetoFinal.Jogador.Jogador;
 
 
@@ -24,14 +25,14 @@ public class Tabuleiro {
 	}
 	
 	// Adiciona a carta à mesa. Explicitar se é jogador 1 ou 2.
-	public void adcCartasEvocadas(Carta carta_abaixada, int jogador) {
-		if(jogador == 1) {
+	public void adcCartasEvocadas(Carta carta_abaixada, Jogador jogador) {
+		if(jogador.equals(jogador1)) {
 			if(checaNumeroCartasEvocadas(this.cartas_evocadas1.size(), 1)) {
 				this.cartas_evocadas1.add(carta_abaixada);
 			}
 		}
 		
-		else if(jogador == 2) {
+		else if(jogador.equals(jogador2)) {
 			if(checaNumeroCartasEvocadas(this.cartas_evocadas2.size(), 1)) {
 				this.cartas_evocadas2.add(carta_abaixada);
 			}
@@ -42,14 +43,14 @@ public class Tabuleiro {
 	}
 	
 	//Remove carta da mesa.
-	public void rmvCartasEvocadas(Carta carta_removida, int jogador) {
-		if(jogador == 1) {
+	public void rmvCartasEvocadas(Carta carta_removida, Jogador jogador) {
+		if(jogador.equals(jogador1)) {
 			if(checaNumeroCartasEvocadas(this.cartas_evocadas1.size(), 0)) {
 				this.cartas_evocadas1.remove(carta_removida);
 			}
 		}
 		
-		else if(jogador == 2) {
+		else if(jogador.equals(jogador2)) {
 			if(checaNumeroCartasEvocadas(this.cartas_evocadas2.size(), 0)) {
 				this.cartas_evocadas2.remove(carta_removida);
 			}
@@ -80,14 +81,102 @@ public class Tabuleiro {
 		
 	}
 
+	public void RodadasJogo() {
+		this.rodada ++;
+		
+		Jogador jogador_ataq = jogadorAtacante(this.jogador1, this.jogador2);
+		Jogador jogador_def = jogadorDefensor(this.jogador1, this.jogador2);
+		
+		
+		
+	}
+	
+	
 	
 	public void imprimeTabuleiro() {
 		
 	}
 	
+	
+	private void turnoAtacante(Jogador atacante) {
+		atacante.comprarCarta();
+		
+		System.out.println("Informe o número da carta que deseja jogar: ");
+		
+		imprimeCartasdaMao(atacante);
+		System.out.println("PULAR: Insira qualquer outro número");
+		
+		int carta_escolhida = (leInformacaoInt() - 1);
+		
+		if((carta_escolhida >= atacante.verCartasNaMao().size()) || carta_escolhida == 0) {
+			return;
+		}
+		
+		else {		
+			if(verificaCartaEvocavel(atacante.verCartasNaMao().get(carta_escolhida))) {
+				adcCartasEvocadas(atacante.verCartasNaMao().get(carta_escolhida), atacante); 
+			}
+		//	atacante.verCartasNaMao().get(carta_escolhida).aplicarEfeito(this, atacante);	//Aplica efeito da carta
+		}
+		
+		
+	}
+	
+	
+	private boolean consomeMana(Jogador jogador, Carta carta_jogada) {
+			
+		if((carta_jogada.verCustoMana() <= jogador.verMana()) && (verificaCartaEvocavel(carta_jogada))) {
+			int mana_atualizada = (jogador.verMana() - carta_jogada.verCustoMana());
+			jogador.definirMana(mana_atualizada);
+			return true;
+		}
+		
+		else if(!(verificaCartaEvocavel(carta_jogada)) && (carta_jogada.verCustoMana() <= (jogador.verMana() + jogador.verManaFeitico()))) {
+			
+		}
+		
+		else {
+			return false;
+		}
+	}
+	
+	
+	private boolean verificaCartaEvocavel(Carta carta_recebida) {
+		if(carta_recebida instanceof Feiticos) {
+			return false;
+		}
+		else return true;
+	}
+	
+	private Jogador jogadorAtacante(Jogador jogador_a, Jogador jogador_b) {	
+		if(jogador_a.verAtaque() == true) {
+			jogador_b.definirAtaque(true);
+			jogador_a.definirAtaque(false);
+			return jogador_b;
+		}
+		else {
+			jogador_b.definirAtaque(false);
+			jogador_a.definirAtaque(true);
+			return jogador_a;
+		}
+		
+	}
+	
+	private Jogador jogadorDefensor(Jogador jogador_a, Jogador jogador_b) {
+		Jogador jogador_ataq = jogadorAtacante(jogador_a, jogador_b);
+		
+		if(jogador_a.equals(jogador_ataq)) {
+			return jogador_b;
+		}
+		else {
+			return jogador_a;
+		}
+	}
+	
 	private void imprimeCartasdaMao(Jogador jogador) {
 		
 		for(int i = 0; i < jogador.verCartasNaMao().size(); i ++) {
+			System.out.println("Carta "+ (i+1));
 			System.out.println("Nome: "+jogador.verCartasNaMao().get(i).verNome());
 			System.out.println("Custo de Mana: "+jogador.verCartasNaMao().get(i).verCustoMana());
 			System.out.println("Vida Total: "+jogador.verCartasNaMao().get(i).verVidaTotal());
@@ -112,8 +201,7 @@ public class Tabuleiro {
 		
 		//scan.close();
 	}
-	
-	
+		
 	//Valida o número de cartas na mesa.
 	private boolean checaNumeroCartasEvocadas(int numero_cartas, int tipo) {
 		if(tipo == 1) {
@@ -136,6 +224,17 @@ public class Tabuleiro {
 		return false;
 	}
 	
+	private int leInformacaoInt() {
+		Scanner scan = new Scanner(System.in);
+		int resposta = scan.nextInt();
+		return resposta;
+	}
+	
+	private String leInformacaoStr() {
+		Scanner scan = new Scanner(System.in);
+		String resposta = scan.nextLine();
+		return resposta;
+	}
 	
 }
 

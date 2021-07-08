@@ -12,14 +12,18 @@ public class Jogador {
 	private String nome;
 	private int vida;
 	private int mana;
+	private int mana_feitico;
 	private Deck deck;
+	private boolean ataque;
 	private List<Carta> cartasNaMao;
 	
 	public Jogador(String nome, Deck deck) {
 		this.nome = nome;
 		this.vida = 20;
 		this.mana = 0;
+		this.mana_feitico = 0;
 		this.deck = deck;
+		this.ataque = false;
 	//	iniciarCartasNaMao(deck);
 	}
 
@@ -52,8 +56,24 @@ public class Jogador {
 		this.mana = mana;
 	}
 
+	public int verManaFeitico() {
+		return this.mana_feitico;
+	}
+	
+	public void definirManaFeitico(int mana_fei) {
+		this.mana_feitico = mana_fei;
+	}
+	
 	public Deck verDeck() {
 		return deck;
+	}
+	
+	public boolean verAtaque() {
+		return this.ataque;
+	}
+	
+	public void definirAtaque(boolean rodada) {
+		this.ataque = rodada;
 	}
 	
 	public void iniciarCartasNaMao() {
@@ -71,6 +91,10 @@ public class Jogador {
 		}
 	}
 
+	
+	public void comprarCarta() {
+		//Adiciona uma carta na mão do jogador
+	}
 	
 	public void reiniciarCartasNaMao(int quantidade) {
 		//Método para redefinir as cartas na mão do jogador

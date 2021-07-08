@@ -15,6 +15,7 @@ public class Carta {
 		valoresCarta = carta;
 		nome = nomeCarta;
 		efeitos = new ArrayList<Integer>();
+
 	}
 	
 	public void atacarInimigo(Seguidores inimigo) {
@@ -42,7 +43,7 @@ public class Carta {
 		valoresCarta.definirDano(dano);
 	}
 	
-	public void aplicarEfeito(Tabuleiro tabuleiro, int jogador) {
+	public void aplicarEfeito(Tabuleiro tabuleiro, Jogador jogador) {	//Como passar o tabuleiro como parâmetro? -Rafa
 		for(int i=0; i< efeitos.size(); i++) {
 			int efeito = efeitos.get(i);
 			
