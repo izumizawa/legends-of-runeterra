@@ -24,6 +24,15 @@ public class Tabuleiro {
 		this.turno = 0;
 	}
 	
+	
+	
+	public Jogador verJogador() {
+		return this.jogador1;
+	}
+	
+	
+	
+	
 	// Adiciona a carta à mesa. Explicitar se é jogador 1 ou 2.
 	public void adcCartasEvocadas(Carta carta_abaixada, Jogador jogador) {
 		if(jogador.equals(jogador1)) {
