@@ -1,7 +1,10 @@
 package ProjetoFinal.Efeitos;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
+import ProjetoFinal.Carta.Carta;
+import ProjetoFinal.Carta.Seguidores;
 import ProjetoFinal.Jogador.Jogador;
 import ProjetoFinal.Tabuleiro.Tabuleiro;
 
@@ -14,10 +17,14 @@ public class CombateImediato implements Efeito {
 			indiceAliado = coletarAliado();
 		}
 		int indiceInimigo = coletarInimigo();
-		while(indiceInimigo >= t.encontraCartasEvocadas(jogador).size()) {
+		while(indiceInimigo >= t.encontraCartasEvocadas(t.verOponente(jogador)).size()) {
 			indiceInimigo = coletarInimigo();
 		}
-		
+		ArrayList<Carta> cartasAliado = t.encontraCartasEvocadas(jogador);
+		ArrayList<Carta> cartasInimigo = t.encontraCartasEvocadas(t.verOponente(jogador));
+		Carta atacante = cartasAliado.get(indiceAliado);
+		Carta defensora = cartasInimigo.get(indiceInimigo);
+		atacante.atacarInimigo((Seguidores)defensora);
 	}
 	
 	
