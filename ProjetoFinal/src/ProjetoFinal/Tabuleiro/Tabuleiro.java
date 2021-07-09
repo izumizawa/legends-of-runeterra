@@ -51,7 +51,7 @@ public class Tabuleiro {
 		return this.cartas_defesa;
 	}
 		
-	// Adiciona a carta Ã  mesa. Explicitar se Ã© jogador 1 ou 2.
+	// Adiciona a carta ÃƒÂ  mesa. Explicitar se ÃƒÂ© jogador 1 ou 2.
 	public boolean adcCartasEvocadas(Carta carta_abaixada, Jogador jogador) {
 		if(jogador.equals(jogador1)) {
 			if(checaNumeroCartasEvocadas(this.cartas_evocadas1.size(), 1)) {
@@ -120,9 +120,7 @@ public class Tabuleiro {
 		this.rodada ++;
 		int vida1 = this.jogador1.verVida();
 		int vida2 = this.jogador2.verVida();
-		
-		
-		
+		definirManaInicial();
 		while((vida1 >= 0) && (vida2 >= 0)) {
 			this.rodada ++;
 			
@@ -136,8 +134,9 @@ public class Tabuleiro {
 			turnoDefesa(jogador_def);
 			
 			turnoBatalha();
-			
 		}	
+		definirManaFinal(jogador1);
+		definirManaFinal(jogador2);
 	}
 			
 	private void turnoBatalha() {
@@ -156,7 +155,7 @@ public class Tabuleiro {
 		
 		if(resposta.equals("s")) {
 			
-			System.out.println("Escolha o número das cartas para colocar no campo de batalha!");
+			System.out.println("Escolha o nÃºmero das cartas para colocar no campo de batalha!");
 			
 			while(iteracao) {
 				imprimeCartasEvocadas(cartas_evocadas);
@@ -186,7 +185,7 @@ public class Tabuleiro {
 		
 		if(resposta.equals("s")) {
 			
-			System.out.println("Escolha o número das cartas para colocar no campo de batalha!");
+			System.out.println("Escolha o numero das cartas para colocar no campo de batalha!");
 			
 			while(iteracao) {
 				imprimeCartasEvocadas(cartas_evocadas);
@@ -208,12 +207,12 @@ public class Tabuleiro {
 	private void turnoJogada(Jogador jogador) {
 		jogador.comprarCarta();
 		
-		boolean imprime_mao = true;													//Decisão para imprimir a mao do jogador
+		boolean imprime_mao = true;													//Decisao para imprimir a mao do jogador
 		int carta_escolhida = 0;													//Numero da carta escolhida
 		ArrayList <Carta> cartas_evocadas = encontraCartasEvocadas(jogador);		//Mesa do jogador
 		
 		while(imprime_mao) {			
-			System.out.println("Informe o nÃºmero da carta que deseja jogar: ");
+			System.out.println("Informe o nÃƒÂºmero da carta que deseja jogar: ");
 			imprimeCartasdaMao(jogador);
 			System.out.println("PULAR: Digite 0");
 			carta_escolhida = (leInformacaoInt() - 1);
@@ -226,7 +225,7 @@ public class Tabuleiro {
 			}
 			
 			else {
-				if(!verificaCartaEvocavel(carta)) {									//Se for um feitiço, a carta poderá ser jogada
+				if(!verificaCartaEvocavel(carta)) {									//Se for um feitico, a carta podera ser jogada
 					if((carta_escolhida == -1) || (consomeMana(jogador, carta))) {
 						imprime_mao = false;
 					}	
@@ -242,7 +241,7 @@ public class Tabuleiro {
 			}
 			
 			else {
-				//atacante.verCartasNaMao().get(carta_escolhida).aplicarEfeito(this, atacante);		//adiciona feitiço
+				//atacante.verCartasNaMao().get(carta_escolhida).aplicarEfeito(this, atacante);		//adiciona feitico
 			}
 		}			
 	}
@@ -352,7 +351,7 @@ public class Tabuleiro {
 		//scan.close();
 	}
 		
-	//Valida o nÃºmero de cartas na mesa.
+	//Valida o numero de cartas na mesa.
 	private boolean checaNumeroCartasEvocadas(int numero_cartas, int tipo) {
 		if(tipo == 1) {
 			if(numero_cartas < 6) {
@@ -388,5 +387,22 @@ public class Tabuleiro {
 		return resposta;
 	}
 	
+	private void definirManaInicial() {
+		if (rodada < 10) {
+			jogador1.definirMana(rodada);
+			jogador2.definirMana(rodada);
+		} else {
+			jogador1.definirMana(10);
+			jogador2.definirMana(10);
+		}
+	}
+	
+	private void definirManaFinal(Jogador jogador) {
+		if (jogador.verMana() > 3)
+			jogador.definirManaFeitico(3);
+		else if (jogador.verMana() > 0)
+			jogador.definirManaFeitico(jogador.verMana());
+		jogador.definirMana(0);
+	}
 }
 
