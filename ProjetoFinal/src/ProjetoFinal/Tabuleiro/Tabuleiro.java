@@ -128,7 +128,7 @@ public class Tabuleiro {
 		
 		if(resposta.equals("s")) {
 			
-			System.out.println("Escolha o n�mero das cartas para colocar no campo de batalha!");
+			System.out.println("Escolha o numero das cartas para colocar no campo de batalha!");
 			
 			while(iteracao) {
 				numero_carta = (leInformacaoInt() - 1);
@@ -146,7 +146,7 @@ public class Tabuleiro {
 	private void turnoJogada(Jogador jogador) {
 		jogador.comprarCarta();
 		
-		boolean imprime_mao = true;													//Decis�o para imprimir a mao do jogador
+		boolean imprime_mao = true;													//Decisao para imprimir a mao do jogador
 		int carta_escolhida = 0;													//Numero da carta escolhida
 		ArrayList <Carta> cartas_evocadas = encontraCartasEvocadas(jogador);		//Mesa do jogador
 		
@@ -164,7 +164,7 @@ public class Tabuleiro {
 			}
 			
 			else {
-				if(!verificaCartaEvocavel(carta)) {									//Se for um feiti�o, a carta poder� ser jogada
+				if(!verificaCartaEvocavel(carta)) {									//Se for um feitico, a carta podera ser jogada
 					if((carta_escolhida == -1) || (consomeMana(jogador, carta))) {
 						imprime_mao = false;
 					}	
@@ -180,7 +180,7 @@ public class Tabuleiro {
 			}
 			
 			else {
-				//atacante.verCartasNaMao().get(carta_escolhida).aplicarEfeito(this, atacante);		//adiciona feiti�o
+				//atacante.verCartasNaMao().get(carta_escolhida).aplicarEfeito(this, atacante);		//adiciona feitico
 			}
 		}			
 	}
@@ -279,7 +279,7 @@ public class Tabuleiro {
 		//scan.close();
 	}
 		
-	//Valida o número de cartas na mesa.
+	//Valida o numero de cartas na mesa.
 	private boolean checaNumeroCartasEvocadas(int numero_cartas, int tipo) {
 		if(tipo == 1) {
 			if(numero_cartas < 6) {
