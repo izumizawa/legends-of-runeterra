@@ -2,6 +2,7 @@ package ProjetoFinal.Carta;
 
 import java.util.ArrayList;
 
+import ProjetoFinal.Efeitos.Efeito;
 import ProjetoFinal.ItensAdicionais.Status;
 import ProjetoFinal.Jogador.Jogador;
 import ProjetoFinal.Tabuleiro.Tabuleiro;
@@ -9,13 +10,26 @@ import ProjetoFinal.Tabuleiro.Tabuleiro;
 public class Carta {
 	private String nome;
 	private Status valoresCarta;
-	private ArrayList<Integer> efeitos;
+	private Status valoresCartaAtual;
+	private ArrayList<Efeito> efeitos;
 
 	public Carta(String nomeCarta,Status carta) {
 		valoresCarta = carta;
 		nome = nomeCarta;
-		efeitos = new ArrayList<Integer>();
+		efeitos = new ArrayList<Efeito>();
+		valoresCartaAtual = carta;
 
+	}
+	
+	public Carta(String nomeCarta,Status carta,ArrayList<Efeito> e) {
+		valoresCarta = carta;
+		nome = nomeCarta;
+		efeitos = e;
+		valoresCartaAtual = carta;
+	}
+	
+	public Status verStatusAtual() {
+		return valoresCartaAtual;
 	}
 	
 	public void atacarInimigo(Seguidores inimigo) {
@@ -34,19 +48,31 @@ public class Carta {
 	public int verDano() {
 		return valoresCarta.verAtaque();
 	}
+	public int verDanoAtual() {
+		return valoresCartaAtual.verAtaque();
+	}
+	
+	public int verVidaAtual() {
+		return valoresCartaAtual.verDefesa();
+	}
 	
 	public int verVidaTotal() {
 		return valoresCarta.verDefesa();
 	}
 	
-	public void definirDano(int dano) {
-		valoresCarta.definirDano(dano);
+	
+	public void definirDanoAtual(int dano) {
+		valoresCartaAtual.definirDano(dano);
+	}
+	
+	public void definirVidaAtual(int vida) {
+		valoresCarta.definirVida(vida);
 	}
 	
 	public void aplicarEfeito(Tabuleiro tabuleiro, Jogador jogador) {	//Como passar o tabuleiro como parâmetro? -Rafa
 		for(int i=0; i< efeitos.size(); i++) {
-			int efeito = efeitos.get(i);
-			
+			Efeito efeito = efeitos.get(i);
+			efeito.aplicarEfeitos(tabuleiro, jogador);
 		}
 	}
 }

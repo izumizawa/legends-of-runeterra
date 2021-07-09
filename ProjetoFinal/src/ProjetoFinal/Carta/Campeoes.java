@@ -27,7 +27,7 @@ public class Campeoes extends Seguidores{
 			andamentoCondicao += dano;
 		}
 		else if(tipo == 2) {
-			int vidaInimigo = inimigo.verVidaAtual();
+			int vidaInimigo = inimigo.verVidaTotal();
 			if(vidaInimigo<=0) {
 				andamentoCondicao+=1;
 			}
@@ -57,7 +57,8 @@ public class Campeoes extends Seguidores{
 				definirDanoAtual(nCondicao);
 			}
 			else if(tipo ==2 ) {
-				definirVidaAtual(nCondicao);
+				int vida = verVidaAtual();
+				definirVidaAtual(vida + nCondicao);
 			}
 		}
 	}
