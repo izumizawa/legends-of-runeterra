@@ -22,7 +22,7 @@ public class Tabuleiro {
 		this.cartas_evocadas2 = new ArrayList<>();
 		this.cartas_ataque = new ArrayList<>();
 		this.cartas_defesa = new ArrayList<>();
-		this.rodada = 0;
+		this.rodada = -1;
 		this.turno = 0;
 	}
 		
@@ -32,6 +32,15 @@ public class Tabuleiro {
 	
 	public Jogador verJogador2() {
 		return this.jogador2;
+	}
+	
+	public Jogador verOponente(Jogador jogador) {
+		if(jogador.equals(jogador1)) {
+			return jogador2;
+		}
+		else {
+			return jogador1;
+		}
 	}
 	
 	public ArrayList<Carta> verCartasAtaque(){
@@ -109,25 +118,33 @@ public class Tabuleiro {
 
 	public void RodadasJogo() {
 		this.rodada ++;
-		
-		Jogador jogador_ataq = jogadorAtacante(this.jogador1, this.jogador2);
-		Jogador jogador_def = jogadorDefensor(this.jogador1, this.jogador2);
-		
-		turnoJogada(jogador_ataq);
-		turnoAtaque(jogador_ataq);
-		
-		turnoJogada(jogador_def);
-		turnoDefesa(jogador_def);
-		
-		turnoBatalha();
+		int vida1 = this.jogador1.verVida();
+		int vida2 = this.jogador2.verVida();
 		
 		
+		
+		while((vida1 >= 0) && (vida2 >= 0)) {
+			this.rodada ++;
+			
+			Jogador jogador_ataq = jogadorAtacante(this.jogador1, this.jogador2);
+			Jogador jogador_def = jogadorDefensor(this.jogador1, this.jogador2);
+			
+			turnoJogada(jogador_ataq);
+			turnoAtaque(jogador_ataq);
+			
+			turnoJogada(jogador_def);
+			turnoDefesa(jogador_def);
+			
+			turnoBatalha();
+			
+		}	
 	}
 			
 	private void turnoBatalha() {
 		
 	}
 	
+
 	private void turnoDefesa(Jogador defensor) {
 		
 		System.out.println("Deseja defender? s/n");
