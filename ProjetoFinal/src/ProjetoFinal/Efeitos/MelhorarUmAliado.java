@@ -22,35 +22,17 @@ public class MelhorarUmAliado implements Efeito  {
 		boolean respondeu = false;
 		int indice = coletarEntrada();
 		while(!false) {
-			
-			Jogador j = t.verJogador1();
-			if(j.equals(jogador)) {
-				ArrayList<Carta> cartasEmCampo = t.encontraCartasEvocadas(j);
-				if(indice < cartasEmCampo.size()) {
-					Carta card = cartasEmCampo.get(indice);
-					definirBonusVida(card,stat.verDefesa());
-					definirBonusAtaque(card,stat.verAtaque());
-					respondeu = true;
-				}
-				else {
-					System.out.println("Indice Invalido, escolha novamente");
-					indice = coletarEntrada();
-				}
+			ArrayList<Carta> cartasEmCampo = t.encontraCartasEvocadas(jogador);
+			if(indice < cartasEmCampo.size()) {
+				Carta card = cartasEmCampo.get(indice);
+				definirBonusVida(card,stat.verDefesa());
+				definirBonusAtaque(card,stat.verAtaque());
+				respondeu = true;
 			}
 			else {
-				j = t.verJogador2();
-				ArrayList<Carta> cartasEmCampo = t.encontraCartasEvocadas(j);
-				if(indice < cartasEmCampo.size()) {
-					Carta card = cartasEmCampo.get(indice);
-					definirBonusVida(card,stat.verDefesa());
-					definirBonusAtaque(card,stat.verAtaque());
-					respondeu = true;
-				}
-				else {
-					System.out.println("Indice Invalido, escolha novamente");
-					indice = coletarEntrada();
-				}
-			}	
+				System.out.println("Indice Invalido, escolha novamente");
+				indice = coletarEntrada();
+			}
 		}
 	}
 	
