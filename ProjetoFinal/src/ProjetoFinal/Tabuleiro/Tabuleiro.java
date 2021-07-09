@@ -117,13 +117,13 @@ public class Tabuleiro {
 	}
 
 	public void RodadasJogo() {
-		this.rodada ++;
 		int vida1 = this.jogador1.verVida();
 		int vida2 = this.jogador2.verVida();
-		definirManaInicial();
+
 		while((vida1 >= 0) && (vida2 >= 0)) {
 			this.rodada ++;
-			
+			definirManaInicial();
+				
 			Jogador jogador_ataq = jogadorAtacante(this.jogador1, this.jogador2);
 			Jogador jogador_def = jogadorDefensor(this.jogador1, this.jogador2);
 			
@@ -134,9 +134,10 @@ public class Tabuleiro {
 			turnoDefesa(jogador_def);
 			
 			turnoBatalha();
+			
+			definirManaFinal(jogador1);
+			definirManaFinal(jogador2);
 		}	
-		definirManaFinal(jogador1);
-		definirManaFinal(jogador2);
 	}
 			
 	private void turnoBatalha() {
