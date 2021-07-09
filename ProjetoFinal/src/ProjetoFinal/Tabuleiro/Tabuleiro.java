@@ -102,12 +102,15 @@ public class Tabuleiro {
 
 	public void RodadasJogo() {
 		this.rodada ++;
+		definirManaInicial();
 		
 		Jogador jogador_ataq = jogadorAtacante(this.jogador1, this.jogador2);
 		Jogador jogador_def = jogadorDefensor(this.jogador1, this.jogador2);
 		
 		turnoJogada(jogador_ataq);
 		
+		definirManaFinal(jogador1);
+		definirManaFinal(jogador2);
 	}
 		
 	public void imprimeTabuleiro() {
@@ -125,7 +128,7 @@ public class Tabuleiro {
 		
 		if(resposta.equals("s")) {
 			
-			System.out.println("Escolha o número das cartas para colocar no campo de batalha!");
+			System.out.println("Escolha o nï¿½mero das cartas para colocar no campo de batalha!");
 			
 			while(iteracao) {
 				numero_carta = (leInformacaoInt() - 1);
@@ -143,7 +146,7 @@ public class Tabuleiro {
 	private void turnoJogada(Jogador jogador) {
 		jogador.comprarCarta();
 		
-		boolean imprime_mao = true;													//Decisão para imprimir a mao do jogador
+		boolean imprime_mao = true;													//Decisï¿½o para imprimir a mao do jogador
 		int carta_escolhida = 0;													//Numero da carta escolhida
 		ArrayList <Carta> cartas_evocadas = encontraCartasEvocadas(jogador);		//Mesa do jogador
 		
@@ -161,7 +164,7 @@ public class Tabuleiro {
 			}
 			
 			else {
-				if(!verificaCartaEvocavel(carta)) {									//Se for um feitiço, a carta poderá ser jogada
+				if(!verificaCartaEvocavel(carta)) {									//Se for um feitiï¿½o, a carta poderï¿½ ser jogada
 					if((carta_escolhida == -1) || (consomeMana(jogador, carta))) {
 						imprime_mao = false;
 					}	
@@ -177,7 +180,7 @@ public class Tabuleiro {
 			}
 			
 			else {
-				//atacante.verCartasNaMao().get(carta_escolhida).aplicarEfeito(this, atacante);		//adiciona feitiço
+				//atacante.verCartasNaMao().get(carta_escolhida).aplicarEfeito(this, atacante);		//adiciona feitiï¿½o
 			}
 		}			
 	}
@@ -310,5 +313,22 @@ public class Tabuleiro {
 		return resposta;
 	}
 	
+	private void definirManaInicial() {
+		if (rodada < 10) {
+			jogador1.definirMana(rodada);
+			jogador2.definirMana(rodada);
+		} else {
+			jogador1.definirMana(10);
+			jogador2.definirMana(10);
+		}
+	}
+	
+	private void definirManaFinal(Jogador jogador) {
+		if (jogador.verMana() > 3)
+			jogador.definirManaFeitico(3);
+		else if (jogador.verMana() > 0)
+			jogador.definirManaFeitico(jogador.verMana());
+		jogador.definirMana(0);
+	}
 }
 
