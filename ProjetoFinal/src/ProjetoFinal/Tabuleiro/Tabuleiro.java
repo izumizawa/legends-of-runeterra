@@ -11,26 +11,36 @@ import ProjetoFinal.Jogador.Jogador;
 
 public class Tabuleiro {
 	private Jogador jogador1, jogador2;
-	private ArrayList <Carta> cartas_evocadas1, cartas_evocadas2;
-	private int rodada;
-	private int turno;
+	private ArrayList <Carta> cartas_evocadas1, cartas_evocadas2, cartas_ataque, cartas_defesa;
+	private int rodada, turno;
+
 	
 	public Tabuleiro(Jogador jogador1, Jogador jogador2) {
 		this.jogador1 = jogador1;
 		this.jogador2 = jogador2;
 		this.cartas_evocadas1= new ArrayList<>();
 		this.cartas_evocadas2 = new ArrayList<>();
+		this.cartas_ataque = new ArrayList<>();
+		this.cartas_defesa = new ArrayList<>();
 		this.rodada = 0;
 		this.turno = 0;
 	}
-	
-	
-	
-	public Jogador verJogador() {
+		
+	public Jogador verJogador1() {
 		return this.jogador1;
 	}
 	
+	public Jogador verJogador2() {
+		return this.jogador2;
+	}
 	
+	public ArrayList<Carta> verCartasAtaque(){
+		return this.cartas_ataque;
+	}
+	
+	public ArrayList<Carta> verCartasDefesa(){
+		return this.cartas_defesa;
+	}
 	
 	
 	// Adiciona a carta à mesa. Explicitar se é jogador 1 ou 2.
@@ -96,16 +106,39 @@ public class Tabuleiro {
 		Jogador jogador_ataq = jogadorAtacante(this.jogador1, this.jogador2);
 		Jogador jogador_def = jogadorDefensor(this.jogador1, this.jogador2);
 		
-		
+		turnoJogada(jogador_ataq);
 		
 	}
-	
-	
-	
+		
 	public void imprimeTabuleiro() {
 		
 	}
 	
+	private void turnoAtaque(Jogador atacante) {
+		
+		System.out.println("Deseja atacar? s/n");
+		String resposta = leInformacaoStr();
+		int numero_carta = 0;
+		boolean iteracao = true;
+		ArrayList <Carta> cartas_evocadas = encontraCartasEvocadas(atacante);
+		
+		
+		if(resposta.equals("s")) {
+			
+			System.out.println("Escolha o n�mero das cartas para colocar no campo de batalha!");
+			
+			while(iteracao) {
+				numero_carta = (leInformacaoInt() - 1);
+				
+			}
+			
+			
+			
+			
+		}
+		
+		
+	}
 	
 	private void turnoJogada(Jogador jogador) {
 		jogador.comprarCarta();
@@ -149,16 +182,13 @@ public class Tabuleiro {
 		}			
 	}
 	
-	
-	
 	public ArrayList<Carta> encontraCartasEvocadas(Jogador jogador) {	
 		if(jogador.equals(this.jogador1)) {
 			return cartas_evocadas1;
 		}
 		else {
 			return cartas_evocadas2;
-		}
-		
+		}		
 	}
 	
 	private boolean consomeMana(Jogador jogador, Carta carta_jogada) {
@@ -184,8 +214,7 @@ public class Tabuleiro {
 		}
 		return false;
 	}
-	
-	
+		
 	private boolean verificaCartaEvocavel(Carta carta_recebida) {
 		if(carta_recebida instanceof Feiticos) {
 			return false;
@@ -229,7 +258,7 @@ public class Tabuleiro {
 			System.out.println("");
 		}
 	}
-	
+	 
 	private void reiniciaMao(Jogador jogador) {
 
 		@SuppressWarnings("resource")
