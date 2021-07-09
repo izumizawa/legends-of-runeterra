@@ -41,8 +41,7 @@ public class Tabuleiro {
 	public ArrayList<Carta> verCartasDefesa(){
 		return this.cartas_defesa;
 	}
-	
-	
+		
 	// Adiciona a carta Ã  mesa. Explicitar se Ã© jogador 1 ou 2.
 	public boolean adcCartasEvocadas(Carta carta_abaixada, Jogador jogador) {
 		if(jogador.equals(jogador1)) {
@@ -59,6 +58,14 @@ public class Tabuleiro {
 			}
 		}
 		return false;
+	}
+		
+	private void adcCartasCombate(Carta carta, ArrayList<Carta> combate) {
+		combate.add(carta);
+	}
+	
+	private void remvCartasCombate(Carta carta, ArrayList<Carta> combate) {
+		combate.remove(carta);
 	}
 	
 	//Remove carta da mesa.
@@ -107,11 +114,48 @@ public class Tabuleiro {
 		Jogador jogador_def = jogadorDefensor(this.jogador1, this.jogador2);
 		
 		turnoJogada(jogador_ataq);
+		turnoAtaque(jogador_ataq);
+		
+		turnoJogada(jogador_def);
+		turnoDefesa(jogador_def);
+		
+		turnoBatalha();
+		
 		
 	}
+			
+	private void turnoBatalha() {
 		
-	public void imprimeTabuleiro() {
+	}
+	
+	private void turnoDefesa(Jogador defensor) {
 		
+		System.out.println("Deseja defender? s/n");
+		String resposta = leInformacaoStr();
+		int numero_carta = 0;
+		boolean iteracao = true;
+		ArrayList <Carta> cartas_evocadas = encontraCartasEvocadas(defensor);
+		
+		
+		if(resposta.equals("s")) {
+			
+			System.out.println("Escolha o número das cartas para colocar no campo de batalha!");
+			
+			while(iteracao) {
+				imprimeCartasEvocadas(cartas_evocadas);
+				System.out.println("Pressione 0 para concluir");
+				numero_carta = (leInformacaoInt() - 1);
+				
+				if((numero_carta == -1) || (numero_carta > cartas_evocadas.size())) {
+					iteracao = false;
+				}
+				
+				else  {
+					adcCartasCombate(cartas_evocadas.get(numero_carta), this.cartas_defesa);
+					rmvCartasEvocadas(cartas_evocadas.get(numero_carta), defensor);
+				}	
+			}		
+		}		
 	}
 	
 	private void turnoAtaque(Jogador atacante) {
@@ -128,16 +172,20 @@ public class Tabuleiro {
 			System.out.println("Escolha o número das cartas para colocar no campo de batalha!");
 			
 			while(iteracao) {
+				imprimeCartasEvocadas(cartas_evocadas);
+				System.out.println("Pressione 0 para concluir");
 				numero_carta = (leInformacaoInt() - 1);
 				
-			}
-			
-			
-			
-			
+				if((numero_carta == -1) || (numero_carta > cartas_evocadas.size())) {
+					iteracao = false;
+				}
+				
+				else  {
+					adcCartasCombate(cartas_evocadas.get(numero_carta), this.cartas_ataque);
+					rmvCartasEvocadas(cartas_evocadas.get(numero_carta), atacante);
+				}	
+			}		
 		}
-		
-		
 	}
 	
 	private void turnoJogada(Jogador jogador) {
@@ -259,6 +307,17 @@ public class Tabuleiro {
 		}
 	}
 	 
+	private void imprimeCartasEvocadas(ArrayList<Carta> cartas) {
+		for(int i = 0; i < cartas.size(); i ++) {
+			System.out.println("Carta "+ (i+1));
+			System.out.println("Nome: "+cartas.get(i).verNome());
+			System.out.println("Custo de Mana: "+cartas.get(i).verCustoMana());
+			System.out.println("Vida Total: "+cartas.get(i).verVidaTotal());
+			System.out.println("Dano: "+cartas.get(i).verDano());
+			System.out.println("");
+		}
+	}
+	
 	private void reiniciaMao(Jogador jogador) {
 
 		@SuppressWarnings("resource")
@@ -299,12 +358,14 @@ public class Tabuleiro {
 	}
 	
 	private int leInformacaoInt() {
+		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
 		int resposta = scan.nextInt();
 		return resposta;
 	}
 	
 	private String leInformacaoStr() {
+		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
 		String resposta = scan.nextLine();
 		return resposta;
