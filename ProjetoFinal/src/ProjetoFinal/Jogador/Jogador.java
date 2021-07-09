@@ -1,6 +1,7 @@
 package ProjetoFinal.Jogador;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -81,7 +82,7 @@ public class Jogador {
 		Random gerador = new Random();
 		int i = 0;
 		while (i < 4) {
-			int cartaAleatoria = gerador.nextInt(40); // 0 a 39
+			int cartaAleatoria = gerador.nextInt(this.deck.verCartas().size()); // De acordo com o número de cartas do Deck
 			if (!cartasNaMao.contains(this.deck.verCartas().get(cartaAleatoria))) {
 				Carta carta = this.deck.verCartas().get(cartaAleatoria);
 				this.cartasNaMao.add(carta);
@@ -103,9 +104,10 @@ public class Jogador {
 		//Relocar as cartas tiradas de volta no baralho
 		ArrayList<Carta> novasCartasNaMao = new ArrayList<Carta>();
 		Random gerador = new Random();
-		int i=0;
-		while(i<4) {
-			int cartaAleatoria = gerador.nextInt(40);
+		int i = 0;
+		
+		while(i < quantidade) {
+			int cartaAleatoria = gerador.nextInt(this.deck.verCartas().size());
 			Carta carta = deck.verCartas().get(cartaAleatoria);
 			if(!novasCartasNaMao.contains(carta)) {
 				novasCartasNaMao.add(carta);
@@ -114,12 +116,14 @@ public class Jogador {
 			}
 		}
 		
-		for(i=0; i<cartasNaMao.size();i++) {
-			Carta carta = cartasNaMao.get(i);
-			deck.adicionarCarta(carta);
-			cartasNaMao.remove(carta);
+		Collections.shuffle(cartasNaMao);
+		
+		for(i = 0; i < quantidade; i++) {
+		//	Carta carta = cartasNaMao.get(i);
+			deck.adicionarCarta(cartasNaMao.get(i));
+			cartasNaMao.set(i, novasCartasNaMao.get(i));
 		}
-		cartasNaMao = novasCartasNaMao;
+		//cartasNaMao = novasCartasNaMao;
 	}
 	
 	

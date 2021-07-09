@@ -22,7 +22,7 @@ public class Tabuleiro {
 		this.cartas_evocadas2 = new ArrayList<>();
 		this.cartas_ataque = new ArrayList<>();
 		this.cartas_defesa = new ArrayList<>();
-		this.rodada = -1;
+		this.rodada = 0;
 		this.turno = 0;
 	}
 		
@@ -101,22 +101,26 @@ public class Tabuleiro {
 		Collections.shuffle(deck);
 	}
 	
-	public void IniciaJogo() {
+	public void iniciaJogo() {
 		jogador1.iniciarCartasNaMao();
 		jogador2.iniciarCartasNaMao();
 		
-		System.out.println("Cartas de "+this.jogador1.verNome()+":");
+		System.out.println("**** Cartas de "+this.jogador1.verNome()+":");
 		imprimeCartasdaMao(jogador1);
 		
-		System.out.println("Cartas de "+this.jogador2.verNome()+":");
+		System.out.println("**** Cartas de "+this.jogador2.verNome()+":");
 		imprimeCartasdaMao(jogador2);
 		
 		reiniciaMao(jogador1);
+		System.out.println("**** Cartas finais de "+this.jogador1.verNome()+":");
+		imprimeCartasdaMao(jogador1);
 		reiniciaMao(jogador2);
+		System.out.println("**** Cartas finais de "+this.jogador2.verNome()+":");
+		imprimeCartasdaMao(jogador2);
 		
 	}
 
-	public void RodadasJogo() {
+	public void rodadasJogo() {
 		int vida1 = this.jogador1.verVida();
 		int vida2 = this.jogador2.verVida();
 
@@ -339,12 +343,12 @@ public class Tabuleiro {
 
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
-		System.out.println(jogador.verNome()+" deseja fazer pegar novas cartas? s/n");
+		System.out.println(jogador.verNome()+" deseja pegar novas cartas? s/n ");
 		String resposta = scan.next();
 		
 		
 		if(resposta.equals("s")) {
-			System.out.println("Quantas cartas deseja trocar?");
+			System.out.println("Quantas cartas deseja trocar? ");
 			int quant = scan.nextInt();
 			jogador.reiniciarCartasNaMao(quant);
 		}
