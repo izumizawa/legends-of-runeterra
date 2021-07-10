@@ -125,11 +125,9 @@ public class Jogador {
 		Collections.shuffle(cartasNaMao);
 		
 		for(i = 0; i < quantidade; i++) {
-		//	Carta carta = cartasNaMao.get(i);
 			deck.adicionarCarta(cartasNaMao.get(i));
 			cartasNaMao.set(i, novasCartasNaMao.get(i));
 		}
-		//cartasNaMao = novasCartasNaMao;
 	}
 	
 	public void removerCartadaMao(Carta carta_removida) {
