@@ -349,7 +349,7 @@ public class Tabuleiro {
 		System.out.println("");
 		
 		for(int i = 0; i < this.cartas_evocadas1.size(); i ++) {
-			System.out.print("	" +this.cartas_evocadas1.get(i).verNome()+ "	");
+			System.out.print("|"+this.cartas_evocadas1.get(i).verNome()+" "+this.cartas_evocadas1.get(i).verVidaAtual() +" "+this.cartas_evocadas1.get(i).verDanoAtual()+"|   ");
 		}
 		System.out.println("");
 		
@@ -357,7 +357,7 @@ public class Tabuleiro {
 		
 		
 		for(int i = 0; i < this.cartas_evocadas2.size(); i ++) {
-			System.out.print("	" +this.cartas_evocadas2.get(i).verNome() +"	");
+			System.out.print("|"+this.cartas_evocadas2.get(i).verNome()+" "+this.cartas_evocadas2.get(i).verVidaAtual() +" "+this.cartas_evocadas2.get(i).verDanoAtual()+"|   ");
 		}
 		System.out.println("");
 		System.out.println("");
