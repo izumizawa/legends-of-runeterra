@@ -5,10 +5,16 @@ import java.util.Scanner;
 
 import ProjetoFinal.Carta.Carta;
 import ProjetoFinal.Carta.Seguidores;
+import ProjetoFinal.ItensAdicionais.TipoEfeito;
 import ProjetoFinal.Jogador.Jogador;
 import ProjetoFinal.Tabuleiro.Tabuleiro;
 
 public class CombateImediato implements Efeito {
+	private TipoEfeito tipo;
+	
+	public CombateImediato() {
+		tipo = TipoEfeito.Evocado;
+	}
 
 	@Override
 	public void aplicarEfeitos(Tabuleiro t, Jogador jogador) {
@@ -41,6 +47,16 @@ public class CombateImediato implements Efeito {
 		System.out.println("Escolha um inimigo para entrar em combate");
 		int resposta = scan.nextInt();
 		return resposta;
+	}
+	public TipoEfeito verTipo() {
+		// TODO Auto-generated method stub
+		return tipo;
+	}
+
+	@Override
+	public void removerEfeitoAplicado(Tabuleiro t, Jogador jogador) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

@@ -4,16 +4,18 @@ import java.util.ArrayList;
 
 import ProjetoFinal.Carta.Carta;
 import ProjetoFinal.ItensAdicionais.Status;
+import ProjetoFinal.ItensAdicionais.TipoEfeito;
 import ProjetoFinal.Jogador.Jogador;
 import ProjetoFinal.Tabuleiro.Tabuleiro;
 
 public class MelhorarTodosAliados implements Efeito {
 	private Status stat;
+	private TipoEfeito tipo;
 	
 	public MelhorarTodosAliados(int dano, int vida) {
+		tipo = TipoEfeito.Evocado;
 		stat = new Status(0,dano,vida);
 	}
-	
 	
 	
 	@Override
@@ -49,5 +51,16 @@ public class MelhorarTodosAliados implements Efeito {
 		int dano = card.verDano();
 		int danoAtualizado = dano + stat.verAtaque();
 		card.definirDanoAtual(danoAtualizado);
+	}
+	public TipoEfeito verTipo() {
+		// TODO Auto-generated method stub
+		return tipo;
+	}
+
+
+	@Override
+	public void removerEfeitoAplicado(Tabuleiro t, Jogador jogador) {
+		// TODO Auto-generated method stub
+		
 	}
 }

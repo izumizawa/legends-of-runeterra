@@ -5,10 +5,17 @@ import java.util.Scanner;
 
 import ProjetoFinal.Carta.Carta;
 import ProjetoFinal.Carta.Seguidores;
+import ProjetoFinal.ItensAdicionais.TipoEfeito;
 import ProjetoFinal.Jogador.Jogador;
 import ProjetoFinal.Tabuleiro.Tabuleiro;
 
 public class AtacarDiretamente implements Efeito{
+	
+	private TipoEfeito tipo;
+	
+	public AtacarDiretamente() {
+		tipo = TipoEfeito.Evocado;
+	}
 
 	@Override
 	public void aplicarEfeitos(Tabuleiro t, Jogador jogador) {
@@ -20,7 +27,7 @@ public class AtacarDiretamente implements Efeito{
 		ArrayList<Carta> cartasEmCampo = t.encontraCartasEvocadas(jogador);
 		Seguidores card = (Seguidores)cartasEmCampo.get(indice);
 		Jogador inimigo = t.verOponente(jogador);
-		card.atacarInimigo(inimigo);
+		card.atacarInimigo(t,inimigo);
 	}
 	
 	
@@ -29,5 +36,17 @@ public class AtacarDiretamente implements Efeito{
 		System.out.println("Escolha o indice de carta em campo para receber um bonus");
 		int resposta = scan.nextInt();
 		return resposta;
+	}
+
+	@Override
+	public TipoEfeito verTipo() {
+		// TODO Auto-generated method stub
+		return tipo;
+	}
+
+	@Override
+	public void removerEfeitoAplicado(Tabuleiro t, Jogador jogador) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -20,7 +20,7 @@ public class Elusivo implements Traco{
 		}
 		else {
 			Jogador oponente = t.verOponente(j);
-			card.atacarInimigo(oponente);
+			card.atacarInimigo(t,oponente);
 			
 		}
 		
