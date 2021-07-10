@@ -13,7 +13,7 @@ public class Tabuleiro {
 	private Jogador jogador1, jogador2;
 	private ArrayList <Carta> cartas_evocadas1, cartas_evocadas2, cartas_ataque, cartas_defesa;
 	private int rodada;
-
+	private boolean bloquear_dano1, bloquear_dano2;
 	
 	public Tabuleiro(Jogador jogador1, Jogador jogador2) {
 		this.jogador1 = jogador1;
@@ -50,6 +50,27 @@ public class Tabuleiro {
 		return this.cartas_defesa;
 	}
 		
+	
+	public boolean verBloqueioDano(Jogador jogador) {
+		if(this.jogador1.equals(jogador)) {
+			return this.bloquear_dano1;
+		}
+		return this.bloquear_dano2;
+	}
+	
+	
+	public void defBloqueioDano(Jogador jogador, boolean valor) {
+		if(this.jogador1.equals(jogador)) {
+			this.bloquear_dano1 = valor;
+			
+		}
+		else {
+			this.bloquear_dano2 = valor;
+		}
+	}
+	
+	
+	
 	// Adiciona a carta ÃƒÂ  mesa. Explicitar se ÃƒÂ© jogador 1 ou 2.
 	public void adcCartasEvocadas(Carta carta_abaixada, Jogador jogador) {
 		if(jogador.equals(jogador1)) {
@@ -224,7 +245,8 @@ public class Tabuleiro {
 			else if(checaNumeroCartasEvocadas(cartas_evocadas.size(), 1) && (verificaCartaEvocavel(jogador.verCartasNaMao().get(carta_escolhida)))) {
 				Carta carta = jogador.verCartasNaMao().get(carta_escolhida);
 				if(consomeMana(jogador, carta)) {
-					adcCartasEvocadas(jogador.verCartasNaMao().get(carta_escolhida), jogador);
+					adcCartasEvocadas(carta, jogador);
+					carta.cartaEvocada(this, jogador);
 					jogador.removerCartadaMao(carta);
 				}
 			}
@@ -233,7 +255,8 @@ public class Tabuleiro {
 				Carta carta = jogador.verCartasNaMao().get(carta_escolhida);
 				if(!verificaCartaEvocavel(carta)) {									//Se for um feitico, a carta podera ser jogada
 					if(consomeMana(jogador, carta)) {
-						adcCartasEvocadas(jogador.verCartasNaMao().get(carta_escolhida), jogador);
+						adcCartasEvocadas(carta, jogador);
+						carta.cartaEvocada(this, jogador);
 						jogador.removerCartadaMao(carta);
 					}	
 				}
@@ -346,7 +369,7 @@ public class Tabuleiro {
 		System.out.println("");
 		
 		for(int i = 0; i < this.cartas_evocadas1.size(); i ++) {
-			System.out.print("	" +this.cartas_evocadas1.get(i).verNome()+ "	");
+			System.out.print("|"+this.cartas_evocadas1.get(i).verNome()+" "+this.cartas_evocadas1.get(i).verVidaAtual() +" "+this.cartas_evocadas1.get(i).verDanoAtual()+"|   ");
 		}
 		System.out.println("");
 		
@@ -354,7 +377,7 @@ public class Tabuleiro {
 		
 		
 		for(int i = 0; i < this.cartas_evocadas2.size(); i ++) {
-			System.out.print("	" +this.cartas_evocadas2.get(i).verNome() +"	");
+			System.out.print("|"+this.cartas_evocadas2.get(i).verNome()+" "+this.cartas_evocadas2.get(i).verVidaAtual() +" "+this.cartas_evocadas2.get(i).verDanoAtual()+"|   ");
 		}
 		System.out.println("");
 		System.out.println("");
