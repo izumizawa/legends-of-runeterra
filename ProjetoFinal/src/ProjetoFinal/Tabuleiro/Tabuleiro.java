@@ -129,7 +129,7 @@ public class Tabuleiro {
 			definirManaInicial();
 				
 			Jogador jogador_ataq = jogadorAtacante(this.jogador1, this.jogador2);
-			Jogador jogador_def = jogadorDefensor(this.jogador1, this.jogador2);
+			Jogador jogador_def = jogadorDefensor(jogador_ataq);
 			
 			imprimeCampo();
 			
@@ -219,7 +219,7 @@ public class Tabuleiro {
 		ArrayList <Carta> cartas_evocadas = encontraCartasEvocadas(jogador);		//Mesa do jogador
 		
 		while(imprime_mao) {			
-			System.out.println("Informe o nÃºmero da carta que deseja jogar: ");
+			System.out.println("Informe o numero da carta que deseja jogar: ");
 			imprimeCartasdaMao(jogador);
 			System.out.println("PULAR: Digite 0");
 			carta_escolhida = (leInformacaoInt() - 1);
@@ -233,6 +233,7 @@ public class Tabuleiro {
 				Carta carta = jogador.verCartasNaMao().get(carta_escolhida);
 				if(consomeMana(jogador, carta)) {
 					imprime_mao = false;
+					jogador.removerCartadaMao(carta);
 				}	
 			}
 			
@@ -241,6 +242,7 @@ public class Tabuleiro {
 				if(!verificaCartaEvocavel(carta)) {									//Se for um feitico, a carta podera ser jogada
 					if(consomeMana(jogador, carta)) {
 						imprime_mao = false;
+						jogador.removerCartadaMao(carta);
 					}	
 				}
 			}				
@@ -313,14 +315,14 @@ public class Tabuleiro {
 		
 	}
 	
-	private Jogador jogadorDefensor(Jogador jogador_a, Jogador jogador_b) {
-		Jogador jogador_ataq = jogadorAtacante(jogador_a, jogador_b);
+	private Jogador jogadorDefensor(Jogador jogador_ataq) {
+		//Jogador jogador_ataq = jogadorAtacante(jogador_a, jogador_b);
 		
-		if(jogador_a.equals(jogador_ataq)) {
-			return jogador_b;
+		if(this.jogador1.equals(jogador_ataq)) {
+			return this.jogador2;
 		}
 		else {
-			return jogador_a;
+			return this.jogador1;
 		}
 	}
 	
@@ -357,18 +359,19 @@ public class Tabuleiro {
 		System.out.println("");
 		
 		for(int i = 0; i < this.cartas_evocadas1.size(); i ++) {
-			System.out.print("		"+this.cartas_evocadas1.get(i).verNome()+"		");
+			System.out.print("	" +this.cartas_evocadas1.get(i).verNome()+ "	");
 		}
 		System.out.println("");
 		
 		System.out.println("======================================================================================================== Rodada: "+this.rodada);
 		
-		System.out.println("");
 		
 		for(int i = 0; i < this.cartas_evocadas2.size(); i ++) {
-			System.out.print("		"+this.cartas_evocadas2.get(i).verNome()+"		");
+			System.out.print("	" +this.cartas_evocadas2.get(i).verNome() +"	");
 		}
 		System.out.println("");
+		System.out.println("");
+		
 		
 		System.out.println("		Atacante: "+this.jogador2.verAtaque()+"		 |"+this.jogador2.verNome()+"|		-Vida: "+this.jogador2.verVida()+" -Mana: "+this.jogador2.verMana()+" -Mana feiti�o: "+this.jogador2.verManaFeitico()+" -Deck: "+this.jogador2.verDeck().verCartas().size());
 		System.out.println("");
