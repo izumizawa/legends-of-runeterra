@@ -2,9 +2,9 @@ package ProjetoFinal.Tracos;
 
 import ProjetoFinal.Carta.Seguidores;
 import ProjetoFinal.Jogador.Jogador;
+import ProjetoFinal.Tabuleiro.Tabuleiro;
 
 public interface Traco {
-	public void atacarInimigo(Seguidores card,Seguidores inimigo);
-	public void atacarInimigo(Seguidores card, Jogador player);
+	public void atacarInimigo(Tabuleiro t,Jogador j,Seguidores card,Seguidores inimigo);
 	public String verTipo();
 }

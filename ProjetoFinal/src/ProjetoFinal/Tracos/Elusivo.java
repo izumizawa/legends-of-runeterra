@@ -2,6 +2,7 @@ package ProjetoFinal.Tracos;
 
 import ProjetoFinal.Carta.Seguidores;
 import ProjetoFinal.Jogador.Jogador;
+import ProjetoFinal.Tabuleiro.Tabuleiro;
 
 public class Elusivo implements Traco{
 	private String tipo;
@@ -12,23 +13,19 @@ public class Elusivo implements Traco{
 
 
 	@Override
-	public void atacarInimigo(Seguidores card, Seguidores inimigo) {
+	public void atacarInimigo(Tabuleiro t, Jogador j,Seguidores card, Seguidores inimigo) {
 		// TODO Auto-generated method stub
 		if(inimigo.verTraco().equals(tipo)) {
-			card.atacarInimigo(inimigo);
+			card.atacarInimigo(t,j,inimigo);
 		}
 		else {
-			atacarInimigo(card,card.verJogador());
+			Jogador oponente = t.verOponente(j);
+			card.atacarInimigo(oponente);
+			
 		}
 		
 	}
 
-	@Override
-	public void atacarInimigo(Seguidores card, Jogador player) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	public String verTipo() {
 		return tipo;
 	}
