@@ -2,6 +2,7 @@ package ProjetoFinal.Tracos;
 
 import ProjetoFinal.Carta.Seguidores;
 import ProjetoFinal.Jogador.Jogador;
+import ProjetoFinal.Tabuleiro.Tabuleiro;
 
 public class AtaqueDuplo implements Traco {
 	private String tipo;
@@ -11,17 +12,17 @@ public class AtaqueDuplo implements Traco {
 	}
 
 	@Override
-	public void atacarInimigo(Seguidores card, Seguidores inimigo) {
+	public void atacarInimigo(Tabuleiro t, Jogador j,Seguidores card, Seguidores inimigo) {
 		// TODO Auto-generated method stub
-		card.atacarInimigo(inimigo);
-		card.atacarInimigo(inimigo);
+		card.atacarInimigo(t,j,inimigo);
+		if(inimigo.verVidaAtual()<=0) {
+			card.atacarInimigo(t.verOponente(j));
+		}
+		else {
+			card.atacarInimigo(t,j,inimigo);
+		}
 	}
 
-	@Override
-	public void atacarInimigo(Seguidores card, Jogador player) {
-		// TODO Auto-generated method stub
-		card.atacarInimigo(player);
-	}
 
 	@Override
 	public String verTipo() {

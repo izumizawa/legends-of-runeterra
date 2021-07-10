@@ -3,6 +3,7 @@ package ProjetoFinal.Tracos;
 import ProjetoFinal.Carta.Seguidores;
 import ProjetoFinal.ItensAdicionais.Status;
 import ProjetoFinal.Jogador.Jogador;
+import ProjetoFinal.Tabuleiro.Tabuleiro;
 
 public class Furia implements Traco{
 	private String tipo;
@@ -12,9 +13,9 @@ public class Furia implements Traco{
 		stat = status;
 	}
 	@Override
-	public void atacarInimigo(Seguidores card, Seguidores inimigo) {
+	public void atacarInimigo(Tabuleiro t,Jogador j,Seguidores card, Seguidores inimigo) {
 		// TODO Auto-generated method stub
-		card.atacarInimigo(inimigo);
+		card.atacarInimigo(t,j,inimigo);
 		if(inimigo.verVidaAtual() <= 0) {
 			int danoAtual = card.verDanoAtual();
 			int vidaAtual = card.verVidaAtual();
@@ -23,12 +24,6 @@ public class Furia implements Traco{
 			card.definirDanoAtual(danoAtual + danoBonus);
 			card.definirVidaAtual(vidaAtual + vidaBonus);
 		}
-	}
-
-	@Override
-	public void atacarInimigo(Seguidores card, Jogador player) {
-		// TODO Auto-generated method stub
-		card.atacarInimigo(player);
 	}
 
 	@Override

@@ -1,6 +1,8 @@
 package ProjetoFinal.Carta;
 
 import ProjetoFinal.ItensAdicionais.Status;
+import ProjetoFinal.Jogador.Jogador;
+import ProjetoFinal.Tabuleiro.Tabuleiro;
 
 public class Campeoes extends Seguidores{
 	private int nCondicao;
@@ -20,8 +22,8 @@ public class Campeoes extends Seguidores{
 	
 	
 	@Override
-	public void atacarInimigo(Seguidores inimigo) {
-		super.atacarInimigo(inimigo);
+	public void atacarInimigo(Tabuleiro t, Jogador j,Seguidores inimigo) {
+		super.atacarInimigo(t,j,inimigo);
 		if(tipo == 1) {
 			int dano = verDano();
 			andamentoCondicao += dano;

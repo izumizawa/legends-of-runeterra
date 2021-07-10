@@ -2,6 +2,7 @@ package ProjetoFinal.Carta;
 
 import ProjetoFinal.ItensAdicionais.Status;
 import ProjetoFinal.Jogador.Jogador;
+import ProjetoFinal.Tabuleiro.Tabuleiro;
 import ProjetoFinal.Tracos.Traco;
 
 public class Seguidores extends Carta {
@@ -9,10 +10,11 @@ public class Seguidores extends Carta {
 
 	public Seguidores(String nome,Status carta) {
 		super(nome, carta);
-		tracos = null;
+		traco = null;
 	}
 	
-	public void atacarInimigo(Seguidores inimigo) {
+	@Override
+	public void atacarInimigo(Tabuleiro t, Jogador j,Seguidores inimigo) {
 		int dano = verDanoAtual();
 		inimigo.sofrerDano(dano);
 	}

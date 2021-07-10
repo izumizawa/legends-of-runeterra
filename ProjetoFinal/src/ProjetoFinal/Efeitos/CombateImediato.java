@@ -24,7 +24,7 @@ public class CombateImediato implements Efeito {
 		ArrayList<Carta> cartasInimigo = t.encontraCartasEvocadas(t.verOponente(jogador));
 		Carta atacante = cartasAliado.get(indiceAliado);
 		Carta defensora = cartasInimigo.get(indiceInimigo);
-		atacante.atacarInimigo((Seguidores)defensora);
+		atacante.atacarInimigo(t,jogador,(Seguidores)defensora);
 	}
 	
 	

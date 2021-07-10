@@ -35,7 +35,7 @@ public class Carta {
 		return valoresCartaAtual;
 	}
 	
-	public void atacarInimigo(Seguidores inimigo) {
+	public void atacarInimigo(Tabuleiro t, Jogador j,Seguidores inimigo) {
 		int dano = verDano();
 		inimigo.sofrerDano(dano);
 	}
