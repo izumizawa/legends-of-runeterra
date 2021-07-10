@@ -48,7 +48,6 @@ public class Jogador {
 		}
 	}
 	
-
 	public int verMana() {
 		return mana;
 	}
@@ -94,7 +93,9 @@ public class Jogador {
 
 	
 	public void comprarCarta() {
-		//Adiciona uma carta na mão do jogador
+		Carta carta_pega = this.deck.verCartas().get(0);
+		this.cartasNaMao.add(carta_pega);
+		deck.removerCarta(carta_pega);
 	}
 	
 	public void reiniciarCartasNaMao(int quantidade) {
@@ -124,6 +125,10 @@ public class Jogador {
 			cartasNaMao.set(i, novasCartasNaMao.get(i));
 		}
 		//cartasNaMao = novasCartasNaMao;
+	}
+	
+	public void removerCartadaMao(Carta carta_removida) {
+		this.cartasNaMao.remove(carta_removida);
 	}
 	
 	
