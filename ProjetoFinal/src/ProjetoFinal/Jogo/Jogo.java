@@ -16,25 +16,25 @@ public class Jogo {
 		System.out.println("");
 	
 		Status status1 = new Status(1,1,1);	
-		Status status2 = new Status(2,2,2);
-		Status status3 = new Status(3,3,3);
-		Status status4 = new Status(4,4,4);
-		Status status5 = new Status(5,5,5);
-		Status status6 = new Status(6,6,6);
-		Status status7 = new Status(7,7,7);
-		Status status8 = new Status(8,8,8);
-		Status status9 = new Status(9,9,9);
-		Status status10 = new Status(10,10,10);
-		Status status11 = new Status(11,11,11);
-		Status status12 = new Status(12,12,12);
-		Status status13 = new Status(13,13,13);
-		Status status14 = new Status(14,14,14);
-		Status status15 = new Status(15,15,15);
-		Status status16 = new Status(16,16,16);
-		Status status17 = new Status(17,17,17);
-		Status status18 = new Status(18,18,18);
-		Status status19 = new Status(19,19,19);
-		Status status20 = new Status(20,20,20);
+		Status status2 = new Status(1,2,2);
+		Status status3 = new Status(1,3,3);
+		Status status4 = new Status(1,4,4);
+		Status status5 = new Status(1,5,5);
+		Status status6 = new Status(1,6,6);
+		Status status7 = new Status(1,7,7);
+		Status status8 = new Status(1,8,8);
+		Status status9 = new Status(1,9,9);
+		Status status10 = new Status(1,10,10);
+		Status status11 = new Status(1,11,11);
+		Status status12 = new Status(1,12,12);
+		Status status13 = new Status(1,13,13);
+		Status status14 = new Status(1,14,14);
+		Status status15 = new Status(1,15,15);
+		Status status16 = new Status(1,16,16);
+		Status status17 = new Status(1,17,17);
+		Status status18 = new Status(1,18,18);
+		Status status19 = new Status(1,19,19);
+		Status status20 = new Status(1,20,20);
 		
 		Carta carta1 = new Carta("carta 1", status1);
 		Carta carta2 = new Carta("carta 2", status2);
@@ -89,7 +89,7 @@ public class Jogo {
 		
 		
 		tabuleiro.iniciaJogo();
-		
+		tabuleiro.rodadasJogo();
 		
 		System.out.println("Game terminated. Bye!");
 	 }
