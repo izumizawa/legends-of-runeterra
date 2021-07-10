@@ -7,6 +7,7 @@ import java.util.Random;
 
 import ProjetoFinal.Carta.Carta;
 import ProjetoFinal.Deck.Deck;
+import ProjetoFinal.Tabuleiro.Tabuleiro;
 
 public class Jogador {
 
@@ -41,7 +42,7 @@ public class Jogador {
 	}
 	
 	//Nathan - Adicionei um metodo para ataque direto.
-	public void sofrerDano(int dano) {
+	public void sofrerDano(Tabuleiro t,int dano) {
 		vida = vida - dano;
 		if(vida <0) {
 			vida = 0;
@@ -128,6 +129,10 @@ public class Jogador {
 			deck.adicionarCarta(cartasNaMao.get(i));
 			cartasNaMao.set(i, novasCartasNaMao.get(i));
 		}
+	}
+	
+	public void removerCartadaMao(Carta carta_removida) {
+		this.cartasNaMao.remove(carta_removida);
 	}
 	
 	public void removerCartadaMao(Carta carta_removida) {

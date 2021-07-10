@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import ProjetoFinal.Efeitos.Efeito;
 import ProjetoFinal.ItensAdicionais.Status;
+import ProjetoFinal.ItensAdicionais.TipoEfeito;
 import ProjetoFinal.Jogador.Jogador;
 import ProjetoFinal.Tabuleiro.Tabuleiro;
 
@@ -30,14 +31,22 @@ public class Carta {
 		efeitos = e;
 		valoresCartaAtual = carta;
 	}
+	public Carta(String nomeCarta,Status carta,Efeito e) {
+		valoresCarta = carta;
+		nome = nomeCarta;
+		ArrayList<Efeito> novosEfeitos = new ArrayList<Efeito>();
+		novosEfeitos.add(e);
+		efeitos = novosEfeitos;
+		valoresCartaAtual = carta;
+	}
 	
 	public Status verStatusAtual() {
 		return valoresCartaAtual;
 	}
 	
-	public void atacarInimigo(Seguidores inimigo) {
+	public void atacarInimigo(Tabuleiro t, Jogador j,Seguidores inimigo) {
 		int dano = verDano();
-		inimigo.sofrerDano(dano);
+		inimigo.sofrerDano(t,j,dano);
 	}
 	
 	
@@ -64,6 +73,9 @@ public class Carta {
 		return valoresCarta.verDefesa();
 	}
 	
+	public void definirVidaTotal(int vida) {
+		valoresCarta.definirVida(vida);
+	}
 	
 	public void definirDanoAtual(int dano) {
 		valoresCartaAtual.definirDano(dano);
@@ -73,10 +85,28 @@ public class Carta {
 		valoresCarta.definirVida(vida);
 	}
 	
-	public void aplicarEfeito(Tabuleiro tabuleiro, Jogador jogador) {	//Como passar o tabuleiro como parâmetro? -Rafa
+	public void adicionarEfeito(Efeito e) {
+		efeitos.add(e);
+	}
+	
+	void definirEfeitos(ArrayList<Efeito> e) {
+		efeitos = e;
+	}
+	
+	public ArrayList<Efeito> verEfeitos(){
+		return efeitos;
+	}
+	
+	public void cartaEvocada(Tabuleiro t,Jogador j) {
+		aplicarEfeitoEvocacao(t,j);
+	}
+	
+	private void aplicarEfeitoEvocacao(Tabuleiro tabuleiro, Jogador jogador) {	//Como passar o tabuleiro como parâmetro? -Rafa
 		for(int i=0; i< efeitos.size(); i++) {
-			Efeito efeito = efeitos.get(i);
-			efeito.aplicarEfeitos(tabuleiro, jogador);
+			Efeito e = efeitos.get(i);
+			if(e.verTipo() == TipoEfeito.Evocado) {
+				e.aplicarEfeitos(tabuleiro, jogador);
+			}
 		}
 	}
 }

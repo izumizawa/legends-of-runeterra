@@ -5,10 +5,16 @@ import java.util.Scanner;
 
 import ProjetoFinal.Carta.Carta;
 import ProjetoFinal.Carta.Seguidores;
+import ProjetoFinal.ItensAdicionais.TipoEfeito;
 import ProjetoFinal.Jogador.Jogador;
 import ProjetoFinal.Tabuleiro.Tabuleiro;
 
 public class UmAliadoAtacaTodosInimigos implements Efeito {
+	private TipoEfeito tipo;
+	
+	public UmAliadoAtacaTodosInimigos() {
+		tipo = TipoEfeito.Evocado;
+	}
 	
 	
 	public void aplicarEfeitos(Tabuleiro t,Jogador jogador) {
@@ -37,19 +43,30 @@ public class UmAliadoAtacaTodosInimigos implements Efeito {
 	private void batalharComInimigos(Tabuleiro t,Jogador j,Carta card) {
 		if(j.equals(t.verJogador1())) {
 			ArrayList<Carta> cartasInimigo = t.encontraCartasEvocadas(t.verJogador2());
-			batalhas(card,cartasInimigo);
+			batalhas(t,card,j,cartasInimigo);
 		}
 		else {
 			ArrayList<Carta> cartasInimigo = t.encontraCartasEvocadas(t.verJogador2());
-			batalhas(card,cartasInimigo);
+			batalhas(t,card,j,cartasInimigo);
 		}
 	}
 	
-	private void batalhas(Carta card, ArrayList<Carta> cartasInimigo) {
+	private void batalhas(Tabuleiro t,Carta card, Jogador j,ArrayList<Carta> cartasInimigo) {
 		for(int i=0;i<cartasInimigo.size();i++) {
 			Seguidores s = (Seguidores)cartasInimigo.get(i);
-			card.atacarInimigo(s);
+			card.atacarInimigo(t,j,s);
 		}
+	}
+	public TipoEfeito verTipo() {
+		// TODO Auto-generated method stub
+		return tipo;
+	}
+
+
+	@Override
+	public void removerEfeitoAplicado(Tabuleiro t, Jogador jogador) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 
