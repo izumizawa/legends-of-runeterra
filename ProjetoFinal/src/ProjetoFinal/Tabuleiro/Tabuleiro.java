@@ -22,7 +22,7 @@ public class Tabuleiro {
 		this.cartas_evocadas2 = new ArrayList<>();
 		this.cartas_ataque = new ArrayList<>();
 		this.cartas_defesa = new ArrayList<>();
-		this.rodada = -1;
+		this.rodada = 0;
 		this.turno = 0;
 	}
 		
@@ -101,22 +101,26 @@ public class Tabuleiro {
 		Collections.shuffle(deck);
 	}
 	
-	public void IniciaJogo() {
+	public void iniciaJogo() {
 		jogador1.iniciarCartasNaMao();
 		jogador2.iniciarCartasNaMao();
 		
-		System.out.println("Cartas de "+this.jogador1.verNome()+":");
+		System.out.println("**** Cartas de "+this.jogador1.verNome()+":");
 		imprimeCartasdaMao(jogador1);
 		
-		System.out.println("Cartas de "+this.jogador2.verNome()+":");
+		System.out.println("**** Cartas de "+this.jogador2.verNome()+":");
 		imprimeCartasdaMao(jogador2);
 		
 		reiniciaMao(jogador1);
+		System.out.println("**** Cartas finais de "+this.jogador1.verNome()+":");
+		imprimeCartasdaMao(jogador1);
 		reiniciaMao(jogador2);
+		System.out.println("**** Cartas finais de "+this.jogador2.verNome()+":");
+		imprimeCartasdaMao(jogador2);
 		
 	}
 
-	public void RodadasJogo() {
+	public void rodadasJogo() {
 		int vida1 = this.jogador1.verVida();
 		int vida2 = this.jogador2.verVida();
 
@@ -126,6 +130,8 @@ public class Tabuleiro {
 				
 			Jogador jogador_ataq = jogadorAtacante(this.jogador1, this.jogador2);
 			Jogador jogador_def = jogadorDefensor(this.jogador1, this.jogador2);
+			
+			imprimeCampo();
 			
 			turnoJogada(jogador_ataq);
 			turnoAtaque(jogador_ataq);
@@ -209,7 +215,7 @@ public class Tabuleiro {
 		jogador.comprarCarta();
 		
 		boolean imprime_mao = true;													//Decisao para imprimir a mao do jogador
-		int carta_escolhida = 0;													//Numero da carta escolhida
+		int carta_escolhida = 0;													//Numero da ca rta escolhida
 		ArrayList <Carta> cartas_evocadas = encontraCartasEvocadas(jogador);		//Mesa do jogador
 		
 		while(imprime_mao) {			
@@ -217,17 +223,23 @@ public class Tabuleiro {
 			imprimeCartasdaMao(jogador);
 			System.out.println("PULAR: Digite 0");
 			carta_escolhida = (leInformacaoInt() - 1);
-			Carta carta = jogador.verCartasNaMao().get(carta_escolhida);			//Objeto carta escolhido
+						//Objeto carta escolhido
+					
+			if(carta_escolhida == -1) {
+				imprime_mao = false;
+			}
 			
-			if(checaNumeroCartasEvocadas(cartas_evocadas.size(), 1)) {
-				if((carta_escolhida == -1) || (consomeMana(jogador, carta))) {
+			else if(checaNumeroCartasEvocadas(cartas_evocadas.size(), 1)) {
+				Carta carta = jogador.verCartasNaMao().get(carta_escolhida);
+				if(consomeMana(jogador, carta)) {
 					imprime_mao = false;
 				}	
 			}
 			
 			else {
+				Carta carta = jogador.verCartasNaMao().get(carta_escolhida);
 				if(!verificaCartaEvocavel(carta)) {									//Se for um feitico, a carta podera ser jogada
-					if((carta_escolhida == -1) || (consomeMana(jogador, carta))) {
+					if(consomeMana(jogador, carta)) {
 						imprime_mao = false;
 					}	
 				}
@@ -335,16 +347,46 @@ public class Tabuleiro {
 		}
 	}
 	
+	public void imprimeCampo() {
+		System.out.println("");
+		
+		System.out.println("*****************************************************************************************************************");
+		System.out.println("");
+		System.out.println("		Atacante: "+this.jogador1.verAtaque()+" 	|"+this.jogador1.verNome()+"|		-Vida: "+this.jogador1.verVida()+" -Mana: "+this.jogador1.verMana()+" -Mana feitiço: "+this.jogador1.verManaFeitico()+" -Deck: "+this.jogador1.verDeck().verCartas().size());
+		
+		System.out.println("");
+		
+		for(int i = 0; i < this.cartas_evocadas1.size(); i ++) {
+			System.out.print("		"+this.cartas_evocadas1.get(i).verNome()+"		");
+		}
+		System.out.println("");
+		
+		System.out.println("======================================================================================================== Rodada: "+this.rodada);
+		
+		System.out.println("");
+		
+		for(int i = 0; i < this.cartas_evocadas2.size(); i ++) {
+			System.out.print("		"+this.cartas_evocadas2.get(i).verNome()+"		");
+		}
+		System.out.println("");
+		
+		System.out.println("		Atacante: "+this.jogador2.verAtaque()+"		 |"+this.jogador2.verNome()+"|		-Vida: "+this.jogador2.verVida()+" -Mana: "+this.jogador2.verMana()+" -Mana feitiço: "+this.jogador2.verManaFeitico()+" -Deck: "+this.jogador2.verDeck().verCartas().size());
+		System.out.println("");
+		System.out.println("*****************************************************************************************************************");
+		System.out.println("");
+		
+	}
+	
 	private void reiniciaMao(Jogador jogador) {
 
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
-		System.out.println(jogador.verNome()+" deseja fazer pegar novas cartas? s/n");
+		System.out.println(jogador.verNome()+" deseja pegar novas cartas? s/n ");
 		String resposta = scan.next();
 		
 		
 		if(resposta.equals("s")) {
-			System.out.println("Quantas cartas deseja trocar?");
+			System.out.println("Quantas cartas deseja trocar? ");
 			int quant = scan.nextInt();
 			jogador.reiniciarCartasNaMao(quant);
 		}
