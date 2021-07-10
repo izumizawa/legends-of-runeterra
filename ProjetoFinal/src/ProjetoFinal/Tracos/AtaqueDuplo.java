@@ -16,7 +16,7 @@ public class AtaqueDuplo implements Traco {
 		// TODO Auto-generated method stub
 		card.atacarInimigo(t,j,inimigo);
 		if(inimigo.verVidaAtual()<=0) {
-			card.atacarInimigo(t.verOponente(j));
+			card.atacarInimigo(t,t.verOponente(j));
 		}
 		else {
 			card.atacarInimigo(t,j,inimigo);

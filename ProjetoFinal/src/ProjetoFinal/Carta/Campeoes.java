@@ -1,18 +1,35 @@
 package ProjetoFinal.Carta;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import ProjetoFinal.Efeitos.Efeito;
+import ProjetoFinal.Evoluir.Evolucao;
 import ProjetoFinal.ItensAdicionais.Status;
+import ProjetoFinal.ItensAdicionais.TipoEfeito;
+import ProjetoFinal.ItensAdicionais.TipoEvolucao;
 import ProjetoFinal.Jogador.Jogador;
 import ProjetoFinal.Tabuleiro.Tabuleiro;
+import ProjetoFinal.Tracos.Traco;
 
 public class Campeoes extends Seguidores{
 	private int nCondicao;
 	private int andamentoCondicao;
+	private TipoEvolucao tipoEvolucao;
+	private Evolucao buffEvolucao;
 	private Boolean evoluido;
-	private int tipo;
 
 	public Campeoes(String nome,Status carta, int condicao) {
 		super(nome, carta);
 		nCondicao = condicao;
+		andamentoCondicao = 0;
+		evoluido = false;
+	}
+	public Campeoes(String nome,Status carta, Traco t, Evolucao e,TipoEvolucao tipo,int condicao) {
+		super(nome, carta,t);
+		nCondicao = condicao;
+		tipoEvolucao = tipo;
+		buffEvolucao = e;
 		andamentoCondicao = 0;
 		evoluido = false;
 	}
@@ -24,24 +41,46 @@ public class Campeoes extends Seguidores{
 	@Override
 	public void atacarInimigo(Tabuleiro t, Jogador j,Seguidores inimigo) {
 		super.atacarInimigo(t,j,inimigo);
-		if(tipo == 1) {
-			int dano = verDano();
-			andamentoCondicao += dano;
+		if(tipoEvolucao == TipoEvolucao.Atacar) {
+			andamentoCondicao += 1;
 		}
-		else if(tipo == 2) {
+		else if(tipoEvolucao ==  TipoEvolucao.Matar) {
 			int vidaInimigo = inimigo.verVidaTotal();
 			if(vidaInimigo<=0) {
-				andamentoCondicao+=1;
+				if(inimigo instanceof Seguidores) {
+					andamentoCondicao+=1;
+				}
+				ArrayList<Efeito> efeitos = verEfeitos();
+				Iterator<Efeito> it = efeitos.iterator();
+				while(it.hasNext()) {
+					Efeito e = it.next();
+					if(e.verTipo() == TipoEfeito.Destruido) {
+						e.aplicarEfeitos(t, j);
+					}
+				}
 			}
+		}
+		else if(tipoEvolucao == TipoEvolucao.DarDano) {
+			andamentoCondicao += verDanoAtual();
 		}
 		evoluir();
 	}
 	
 	@Override 
-	public void sofrerDano(int dano){
-		super.sofrerDano(dano);
-		if(tipo == 3) {
+	public void sofrerDano(Tabuleiro t,Jogador j,int dano){
+		super.sofrerDano(t,j,dano);
+		if(tipoEvolucao == TipoEvolucao.SofrerDano) {
 			andamentoCondicao+= dano;
+		}
+		ArrayList<Efeito> efeitos = verEfeitos();
+		if(verVidaAtual()<=0) {
+			Iterator<Efeito> it = efeitos.iterator();
+			while(it.hasNext()) {
+				Efeito e = it.next();
+				if(e.verTipo() == TipoEfeito.Destruido) {
+					e.aplicarEfeitos(t, j);
+				}
+			}
 		}
 	}
 	
@@ -54,20 +93,12 @@ public class Campeoes extends Seguidores{
 	}
 	
 	private void evoluir() {
-		if(verificaEvolucao()) {
-			if(tipo ==1) {
-				definirDanoAtual(nCondicao);
-			}
-			else if(tipo ==2 ) {
-				int vida = verVidaAtual();
-				definirVidaAtual(vida + nCondicao);
-			}
+		if(verificaEvolucao() && !evoluido) {
+			buffEvolucao.evoluir(this);
+			evoluido = true;
 		}
 	}
 	
-	public Boolean verEvoluido() {
-		return evoluido;
-	}
 	
 	
 
