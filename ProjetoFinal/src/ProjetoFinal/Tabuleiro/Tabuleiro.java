@@ -50,7 +50,7 @@ public class Tabuleiro {
 		return this.cartas_defesa;
 	}
 		
-	// Adiciona a carta Ã  mesa. Explicitar se Ã© jogador 1 ou 2.
+	// Adiciona a carta ÃƒÂ  mesa. Explicitar se ÃƒÂ© jogador 1 ou 2.
 	public void adcCartasEvocadas(Carta carta_abaixada, Jogador jogador) {
 		if(jogador.equals(jogador1)) {
 			if(checaNumeroCartasEvocadas(this.cartas_evocadas1.size(), 1)) {
@@ -124,7 +124,6 @@ public class Tabuleiro {
 				
 			Jogador jogador_ataq = jogadorAtacante(this.jogador1, this.jogador2);
 			Jogador jogador_def = jogadorDefensor(jogador_ataq);
-				
 			imprimeCampo();
 			
 			turnoJogada(jogador_ataq);
@@ -155,7 +154,7 @@ public class Tabuleiro {
 		
 		if(resposta.equals("s")) {
 			
-			System.out.println("Escolha o número das cartas para colocar no campo de batalha!");
+			System.out.println("Escolha o nÃºmero das cartas para colocar no campo de batalha!");
 			
 			while(iteracao) {
 				imprimeCartasEvocadas(cartas_evocadas);
@@ -228,7 +227,6 @@ public class Tabuleiro {
 					adcCartasEvocadas(jogador.verCartasNaMao().get(carta_escolhida), jogador);
 					jogador.removerCartadaMao(carta);
 				}
-				
 			}
 						
 			else {
@@ -297,8 +295,7 @@ public class Tabuleiro {
 		
 	}
 	
-	private Jogador jogadorDefensor(Jogador jogador_ataq) {
-		
+	private Jogador jogadorDefensor(Jogador jogador_ataq) {		
 		if(this.jogador1.equals(jogador_ataq)) {
 			return this.jogador2;
 		}
@@ -344,7 +341,7 @@ public class Tabuleiro {
 		
 		System.out.println("*****************************************************************************************************************");
 		System.out.println("");
-		System.out.println("		Atacante: "+this.jogador1.verAtaque()+" 	|"+this.jogador1.verNome()+"|		-Vida: "+this.jogador1.verVida()+" -Mana: "+this.jogador1.verMana()+" -Mana feiti�o: "+this.jogador1.verManaFeitico()+" -Deck: "+this.jogador1.verDeck().verCartas().size());
+		System.out.println("		Atacante: "+this.jogador1.verAtaque()+" 	|"+this.jogador1.verNome()+"|		-Vida: "+this.jogador1.verVida()+" -Mana: "+this.jogador1.verMana()+" -Mana feitiço: "+this.jogador1.verManaFeitico()+" -Deck: "+this.jogador1.verDeck().verCartas().size());
 		
 		System.out.println("");
 		
@@ -363,7 +360,7 @@ public class Tabuleiro {
 		System.out.println("");
 		
 		
-		System.out.println("		Atacante: "+this.jogador2.verAtaque()+"		 |"+this.jogador2.verNome()+"|		-Vida: "+this.jogador2.verVida()+" -Mana: "+this.jogador2.verMana()+" -Mana feiti�o: "+this.jogador2.verManaFeitico()+" -Deck: "+this.jogador2.verDeck().verCartas().size());
+		System.out.println("		Atacante: "+this.jogador2.verAtaque()+"		 |"+this.jogador2.verNome()+"|		-Vida: "+this.jogador2.verVida()+" -Mana: "+this.jogador2.verMana()+" -Mana feitiço: "+this.jogador2.verManaFeitico()+" -Deck: "+this.jogador2.verDeck().verCartas().size());
 		System.out.println("");
 		System.out.println("*****************************************************************************************************************");
 		System.out.println("");

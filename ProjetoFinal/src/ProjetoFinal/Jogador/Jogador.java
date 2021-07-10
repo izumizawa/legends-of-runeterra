@@ -134,6 +134,10 @@ public class Jogador {
 		this.cartasNaMao.remove(carta_removida);
 	}
 	
+	public void removerCartadaMao(Carta carta_removida) {
+		this.cartasNaMao.remove(carta_removida);
+	}
+	
 	
 	public List<Carta> verCartasNaMao() {
 		return cartasNaMao;
