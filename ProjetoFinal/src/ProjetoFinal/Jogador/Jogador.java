@@ -97,6 +97,11 @@ public class Jogador {
 		//Adiciona uma carta na mão do jogador
 	}
 	
+	public void comprarCartaEspecifica(String nome) {
+		Carta carta = deck.pegarCartaEspecifica(nome);
+		cartasNaMao.add(carta);
+	}
+	
 	public void reiniciarCartasNaMao(int quantidade) {
 		//Método para redefinir as cartas na mão do jogador
 		//Cria uma nova lista de cartas, copia as cartasNaMao para a lista
