@@ -12,7 +12,7 @@ import ProjetoFinal.Jogador.Jogador;
 public class Tabuleiro {
 	private Jogador jogador1, jogador2;
 	private ArrayList <Carta> cartas_evocadas1, cartas_evocadas2, cartas_ataque, cartas_defesa;
-	private int rodada, turno;
+	private int rodada;
 
 	
 	public Tabuleiro(Jogador jogador1, Jogador jogador2) {
@@ -23,7 +23,6 @@ public class Tabuleiro {
 		this.cartas_ataque = new ArrayList<>();
 		this.cartas_defesa = new ArrayList<>();
 		this.rodada = 0;
-		this.turno = 0;
 	}
 		
 	public Jogador verJogador1() {
@@ -51,22 +50,22 @@ public class Tabuleiro {
 		return this.cartas_defesa;
 	}
 		
-	// Adiciona a carta Ã  mesa. Explicitar se Ã© jogador 1 ou 2.
-	public boolean adcCartasEvocadas(Carta carta_abaixada, Jogador jogador) {
+	// Adiciona a carta ÃƒÂ  mesa. Explicitar se ÃƒÂ© jogador 1 ou 2.
+	public void adcCartasEvocadas(Carta carta_abaixada, Jogador jogador) {
 		if(jogador.equals(jogador1)) {
 			if(checaNumeroCartasEvocadas(this.cartas_evocadas1.size(), 1)) {
 				this.cartas_evocadas1.add(carta_abaixada);
-				return true;
+				return; 
 			}
 		}
 		
 		else if(jogador.equals(jogador2)) {
 			if(checaNumeroCartasEvocadas(this.cartas_evocadas2.size(), 1)) {
 				this.cartas_evocadas2.add(carta_abaixada);
-				return true;
+				return;
 			}
 		}
-		return false;
+		return;
 	}
 		
 	private void adcCartasCombate(Carta carta, ArrayList<Carta> combate) {
@@ -94,11 +93,6 @@ public class Tabuleiro {
 		else {
 			return;
 		}
-	}
-	
-	//Embaralha o deck do jogador
-	public void embaralhaDeck(ArrayList <Carta> deck) {
-		Collections.shuffle(deck);
 	}
 	
 	public void iniciaJogo() {
@@ -130,7 +124,6 @@ public class Tabuleiro {
 				
 			Jogador jogador_ataq = jogadorAtacante(this.jogador1, this.jogador2);
 			Jogador jogador_def = jogadorDefensor(jogador_ataq);
-			
 			imprimeCampo();
 			
 			turnoJogada(jogador_ataq);
@@ -141,8 +134,8 @@ public class Tabuleiro {
 			
 			turnoBatalha();
 			
-			definirManaFinal(jogador1);
-			definirManaFinal(jogador2);
+			definirManaFinal(jogador_ataq);
+			definirManaFinal(jogador_def);
 		}	
 	}
 			
@@ -150,7 +143,6 @@ public class Tabuleiro {
 		
 	}
 	
-
 	private void turnoDefesa(Jogador defensor) {
 		
 		System.out.println("Deseja defender? s/n");
@@ -162,7 +154,7 @@ public class Tabuleiro {
 		
 		if(resposta.equals("s")) {
 			
-			System.out.println("Escolha o número das cartas para colocar no campo de batalha!");
+			System.out.println("Escolha o nÃºmero das cartas para colocar no campo de batalha!");
 			
 			while(iteracao) {
 				imprimeCartasEvocadas(cartas_evocadas);
@@ -218,47 +210,35 @@ public class Tabuleiro {
 		int carta_escolhida = 0;													//Numero da ca rta escolhida
 		ArrayList <Carta> cartas_evocadas = encontraCartasEvocadas(jogador);		//Mesa do jogador
 		
-		while(imprime_mao) {			
+		while(imprime_mao) {
+			imprimeJogador(jogador);
 			System.out.println("Informe o numero da carta que deseja jogar: ");
 			imprimeCartasdaMao(jogador);
 			System.out.println("PULAR: Digite 0");
 			carta_escolhida = (leInformacaoInt() - 1);
-						//Objeto carta escolhido
 					
 			if(carta_escolhida == -1) {
 				imprime_mao = false;
 			}
 			
-			else if(checaNumeroCartasEvocadas(cartas_evocadas.size(), 1)) {
+			else if(checaNumeroCartasEvocadas(cartas_evocadas.size(), 1) && (verificaCartaEvocavel(jogador.verCartasNaMao().get(carta_escolhida)))) {
 				Carta carta = jogador.verCartasNaMao().get(carta_escolhida);
 				if(consomeMana(jogador, carta)) {
-					imprime_mao = false;
+					adcCartasEvocadas(jogador.verCartasNaMao().get(carta_escolhida), jogador);
 					jogador.removerCartadaMao(carta);
-				}	
+				}
 			}
-			
+						
 			else {
 				Carta carta = jogador.verCartasNaMao().get(carta_escolhida);
 				if(!verificaCartaEvocavel(carta)) {									//Se for um feitico, a carta podera ser jogada
 					if(consomeMana(jogador, carta)) {
-						imprime_mao = false;
+						adcCartasEvocadas(jogador.verCartasNaMao().get(carta_escolhida), jogador);
 						jogador.removerCartadaMao(carta);
 					}	
 				}
-			}				
-		}
-				
-		if(carta_escolhida != -1) {
-			if(verificaCartaEvocavel(jogador.verCartasNaMao().get(carta_escolhida))) { 
-				if(adcCartasEvocadas(jogador.verCartasNaMao().get(carta_escolhida), jogador)) {
-					//atacante.verCartasNaMao().get(carta_escolhida).aplicarEfeito(this, atacante);		//adiciona efeito
-				}
-			}
-			
-			else {
-				//atacante.verCartasNaMao().get(carta_escolhida).aplicarEfeito(this, atacante);		//adiciona feitico
-			}
-		}			
+			}		
+		}	
 	}
 	
 	public ArrayList<Carta> encontraCartasEvocadas(Jogador jogador) {	
@@ -315,9 +295,7 @@ public class Tabuleiro {
 		
 	}
 	
-	private Jogador jogadorDefensor(Jogador jogador_ataq) {
-		//Jogador jogador_ataq = jogadorAtacante(jogador_a, jogador_b);
-		
+	private Jogador jogadorDefensor(Jogador jogador_ataq) {		
 		if(this.jogador1.equals(jogador_ataq)) {
 			return this.jogador2;
 		}
@@ -349,12 +327,21 @@ public class Tabuleiro {
 		}
 	}
 	
+	private void imprimeJogador(Jogador jogador) {
+		System.out.print("*|> JOGADOR: "+ jogador.verNome()+" ");
+		System.out.print("> MANA: "+ jogador.verMana()+" ");
+		System.out.print("> MANA FEITICO: "+ jogador.verManaFeitico()+" ");
+		System.out.print("> DECK: "+ jogador.verDeck().verCartas().size()+"|*");
+		System.out.println("");
+		System.out.println("");
+	}
+		
 	public void imprimeCampo() {
 		System.out.println("");
 		
 		System.out.println("*****************************************************************************************************************");
 		System.out.println("");
-		System.out.println("		Atacante: "+this.jogador1.verAtaque()+" 	|"+this.jogador1.verNome()+"|		-Vida: "+this.jogador1.verVida()+" -Mana: "+this.jogador1.verMana()+" -Mana feiti�o: "+this.jogador1.verManaFeitico()+" -Deck: "+this.jogador1.verDeck().verCartas().size());
+		System.out.println("		Atacante: "+this.jogador1.verAtaque()+" 	|"+this.jogador1.verNome()+"|		-Vida: "+this.jogador1.verVida()+" -Mana: "+this.jogador1.verMana()+" -Mana feitiço: "+this.jogador1.verManaFeitico()+" -Deck: "+this.jogador1.verDeck().verCartas().size());
 		
 		System.out.println("");
 		
@@ -373,7 +360,7 @@ public class Tabuleiro {
 		System.out.println("");
 		
 		
-		System.out.println("		Atacante: "+this.jogador2.verAtaque()+"		 |"+this.jogador2.verNome()+"|		-Vida: "+this.jogador2.verVida()+" -Mana: "+this.jogador2.verMana()+" -Mana feiti�o: "+this.jogador2.verManaFeitico()+" -Deck: "+this.jogador2.verDeck().verCartas().size());
+		System.out.println("		Atacante: "+this.jogador2.verAtaque()+"		 |"+this.jogador2.verNome()+"|		-Vida: "+this.jogador2.verVida()+" -Mana: "+this.jogador2.verMana()+" -Mana feitiço: "+this.jogador2.verManaFeitico()+" -Deck: "+this.jogador2.verDeck().verCartas().size());
 		System.out.println("");
 		System.out.println("*****************************************************************************************************************");
 		System.out.println("");
@@ -444,11 +431,20 @@ public class Tabuleiro {
 	}
 	
 	private void definirManaFinal(Jogador jogador) {
-		if (jogador.verMana() > 3)
+		if ((jogador.verMana() > 3)) {
 			jogador.definirManaFeitico(3);
-		else if (jogador.verMana() > 0)
-			jogador.definirManaFeitico(jogador.verMana());
+		}	
+		else if (jogador.verMana() > 0) {
+			int mana_acumulada = jogador.verManaFeitico() + jogador.verMana();
+			if(mana_acumulada > 3) {
+				jogador.definirManaFeitico(3);
+			}
+			
+			else {
+				jogador.definirManaFeitico(mana_acumulada);
+			}	
 		jogador.definirMana(0);
+		}
 	}
 }
 
