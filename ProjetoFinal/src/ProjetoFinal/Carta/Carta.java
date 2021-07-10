@@ -12,6 +12,9 @@ public class Carta {
 	private Status valoresCarta;
 	private Status valoresCartaAtual;
 	private ArrayList<Efeito> efeitos;
+	
+	
+	public Carta() {}
 
 	public Carta(String nomeCarta,Status carta) {
 		valoresCarta = carta;
@@ -36,6 +39,7 @@ public class Carta {
 		int dano = verDano();
 		inimigo.sofrerDano(dano);
 	}
+	
 	
 	public String verNome() {
 		return nome;

@@ -1,6 +1,7 @@
 package ProjetoFinal.Deck;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import ProjetoFinal.Carta.Carta;
@@ -32,6 +33,18 @@ public class Deck {
 	public Carta pegarCartaDeCima() {
 		Carta carta = this.cartas.get(0);
 		this.cartas.remove(0);
+		return carta;
+	}
+	
+	public Carta pegarCartaEspecifica(String nome) {
+		Carta carta = new Carta();
+		Iterator<Carta> it = cartas.iterator();
+		while(it.hasNext()) {
+			carta = it.next();
+			if(carta.verNome().contains(nome)) {
+				break;
+			}
+		}
 		return carta;
 	}
 
