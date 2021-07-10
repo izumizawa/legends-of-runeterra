@@ -64,6 +64,9 @@ public class Carta {
 		return valoresCarta.verDefesa();
 	}
 	
+	public void definirVidaTotal(int vida) {
+		valoresCarta.definirVida(vida);
+	}
 	
 	public void definirDanoAtual(int dano) {
 		valoresCartaAtual.definirDano(dano);
@@ -71,6 +74,10 @@ public class Carta {
 	
 	public void definirVidaAtual(int vida) {
 		valoresCarta.definirVida(vida);
+	}
+	
+	public void adicionarEfeito(Efeito e) {
+		efeitos.add(e);
 	}
 	
 	public void aplicarEfeito(Tabuleiro tabuleiro, Jogador jogador) {	//Como passar o tabuleiro como parâmetro? -Rafa
