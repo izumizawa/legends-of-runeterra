@@ -42,6 +42,7 @@ public class Campeoes extends Seguidores{
 	public void atacarInimigo(Tabuleiro t, Jogador j,Seguidores inimigo) {
 		Jogador oponente = t.verOponente(j);
 		Traco tracoCampeao = verTraco();
+		int danoDoInimigo = inimigo.verDanoAtual();
 		boolean atacou = true;
 		if(t.verBloqueioDano(oponente)) {
 			atacou=false;
@@ -51,6 +52,7 @@ public class Campeoes extends Seguidores{
 			boolean bloquear = t.verBloqueioDano(oponente);
 			if(!bloquear) {
 				inimigo.sofrerDano(t, j,dano);
+				this.sofrerDano(t,j,danoDoInimigo);
 			}
 			else {
 				t.defBloqueioDano(oponente, false);
