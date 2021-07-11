@@ -98,7 +98,7 @@ public class Tabuleiro {
 		return;
 	}
 		
-	private void adcCartasCombate(Carta carta, ArrayList<Carta> combate) {
+	protected void adcCartasCombate(Carta carta, ArrayList<Carta> combate) {
 		combate.add(carta);
 	}
 	

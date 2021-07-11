@@ -42,7 +42,7 @@ public class App {
 		Display display = Display.getDefault();
 		Shell shell = new Shell();
 		shell.setSize(800, 600);
-		shell.setText("Legends of Runeterra");
+		shell.setText("Legends of Runeterra!");
 		
 		//Status
 		Status garenS = new Status(5,5,5);	

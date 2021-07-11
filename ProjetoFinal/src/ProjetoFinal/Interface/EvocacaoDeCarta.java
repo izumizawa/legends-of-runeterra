@@ -17,7 +17,7 @@ import ProjetoFinal.Carta.Carta;
 import ProjetoFinal.Jogador.Jogador;
 import ProjetoFinal.Tabuleiro.TabuleiroInterface;
 
-public class Jogada extends Dialog {
+public class EvocacaoDeCarta extends Dialog {
 
 	protected Object result;
 	protected Shell shell;
@@ -29,7 +29,7 @@ public class Jogada extends Dialog {
 	 * @param parent
 	 * @param style
 	 */
-	public Jogada(Shell parent, int style, TabuleiroInterface tabuleiro, Jogador jogador) {
+	public EvocacaoDeCarta(Shell parent, int style, TabuleiroInterface tabuleiro, Jogador jogador) {
 		super(parent, style);
 		setText("Jogada de " + jogador.verNome());
 		this.tabuleiroInterface = tabuleiro;

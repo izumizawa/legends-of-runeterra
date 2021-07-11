@@ -7,8 +7,11 @@ import org.eclipse.swt.widgets.Shell;
 
 import ProjetoFinal.Carta.Carta;
 import ProjetoFinal.Interface.CampoInterface;
-import ProjetoFinal.Interface.Jogada;
-import ProjetoFinal.Interface.Pergunta;
+import ProjetoFinal.Interface.EvocacaoDeCarta;
+import ProjetoFinal.Interface.JogadaAtaque;
+import ProjetoFinal.Interface.JogadaDefesa;
+import ProjetoFinal.Interface.PerguntaAtaque;
+import ProjetoFinal.Interface.PerguntaDefesa;
 import ProjetoFinal.Interface.ReiniciaMao;
 import ProjetoFinal.Jogador.Jogador;
 
@@ -52,7 +55,7 @@ public class TabuleiroInterface extends Tabuleiro {
 		boolean imprime_mao = true;													//Decisao para imprimir a mao do jogador
 		ArrayList<Carta> cartas_evocadas = encontraCartasEvocadas(jogador);		//Mesa do jogador
 		
-		Jogada jogada = new Jogada(shell, SWT.NONE, this, jogador);
+		EvocacaoDeCarta jogada = new EvocacaoDeCarta(shell, SWT.NONE, this, jogador);
 		while(imprime_mao) {
 			jogada.open("mao", jogador.verCartasNaMao());					
 			if(cartaEscolhida == -1) {
@@ -81,9 +84,56 @@ public class TabuleiroInterface extends Tabuleiro {
 		}	
 	}
 	
-	private void abrePergunta(Shell shell, String pergunta) {
-		Pergunta janelaPergunta = new Pergunta(shell, SWT.NONE);
-		janelaPergunta.open(pergunta);
+	private void abreAtaque(Shell shell, String pergunta, Jogador jogador) {
+		PerguntaAtaque janelaPergunta = new PerguntaAtaque(shell, SWT.NONE, this);
+		janelaPergunta.open(pergunta, jogador);
+	}
+	
+	private void abreDefesa(Shell shell, String pergunta, Jogador jogador) {
+		PerguntaDefesa janelaPergunta = new PerguntaDefesa(shell, SWT.NONE, this);
+		janelaPergunta.open(pergunta, jogador);
+	}
+
+	
+	public void turnoAtaque(Jogador atacante, Shell shell) {
+		System.out.println("Turno ataque");
+		boolean iteracao = true;
+		ArrayList <Carta> cartas_evocadas = encontraCartasEvocadas(atacante);
+		
+		JogadaAtaque jogada = new JogadaAtaque(shell, SWT.NONE, this, atacante);
+		
+		
+		while(iteracao) {
+			jogada.open(cartas_evocadas, verCartasAtaque());
+			
+			if((cartaEscolhida == -1) || (cartaEscolhida > cartas_evocadas.size()))
+				iteracao = false;
+			
+			else  {
+				adcCartasCombate(cartas_evocadas.get(cartaEscolhida), verCartasAtaque());
+				rmvCartasEvocadas(cartas_evocadas.get(cartaEscolhida), atacante);
+			}	
+		}		
+	}
+	
+	public void turnoDefesa(Jogador defensor, Shell shell) {
+		System.out.println("Turno defesa");
+		boolean iteracao = true;
+		ArrayList <Carta> cartas_evocadas = encontraCartasEvocadas(defensor);	
+		JogadaDefesa jogada = new JogadaDefesa(shell, SWT.NONE, this, defensor);
+		
+		while(iteracao) {
+			jogada.open(cartas_evocadas, verCartasDefesa());
+			
+			if((cartaEscolhida == -1) || (cartaEscolhida > cartas_evocadas.size())) 
+				iteracao = false;
+	
+			else  {
+				adcCartasCombate(cartas_evocadas.get(cartaEscolhida), verCartasDefesa());
+				rmvCartasEvocadas(cartas_evocadas.get(cartaEscolhida), defensor);
+			}	
+		}		
+				
 	}
 	
 	public void rodadasJogo(Shell shell) {
@@ -92,6 +142,7 @@ public class TabuleiroInterface extends Tabuleiro {
 
 		while((vida1 >= 0) && (vida2 >= 0)) {
 			this.rodada ++;
+			System.out.println("Rodada " + this.rodada);
 			definirManaInicial();
 				
 			Jogador jogador_ataq = jogadorAtacante(verJogador1(), verJogador2());
@@ -99,11 +150,11 @@ public class TabuleiroInterface extends Tabuleiro {
 			abreCampo(shell);
 			
 			turnoJogada(jogador_ataq, shell);
-//			turnoAtaque(jogador_ataq, shell);
+			abreAtaque(shell, jogador_ataq.verNome() + ", deseja atacar?", jogador_ataq);
 			
 			turnoJogada(jogador_def, shell);
-//			turnoDefesa(jogador_def, shell);
-//			
+			abreDefesa(shell, jogador_def.verNome() + ", deseja defender?", jogador_def);
+		
 //			turnoBatalha();
 			
 			definirManaFinal(jogador_ataq);

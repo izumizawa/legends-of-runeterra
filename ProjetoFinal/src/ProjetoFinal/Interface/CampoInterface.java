@@ -60,8 +60,8 @@ public class CampoInterface {
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(800, 600);
-		shell.setText("Legends of Runeterra");
+		shell.setSize(600, 600);
+		shell.setText("Legends of Runeterra: campo");
 		shell.setLayout(new GridLayout(4, false));
 		new Label(shell, SWT.NONE);
 		
