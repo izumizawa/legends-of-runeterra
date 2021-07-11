@@ -3,8 +3,12 @@ package ProjetoFinal.Tabuleiro;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import org.eclipse.swt.widgets.Shell;
+
 import ProjetoFinal.Carta.Carta;
 import ProjetoFinal.Carta.Feiticos;
+import ProjetoFinal.Interface.ImpressaoCartas;
+import ProjetoFinal.Interface.ReiniciaMao;
 import ProjetoFinal.Jogador.Jogador;
 
 
@@ -132,6 +136,14 @@ public class Tabuleiro {
 		System.out.println("**** Cartas finais de "+this.jogador2.verNome()+":");
 		imprimeCartasdaMao(jogador2);
 		
+	}
+	
+	public void iniciaJogoInterface(Shell shell, int style) {
+		jogador1.iniciarCartasNaMao();
+		jogador2.iniciarCartasNaMao();
+	
+		abreReiniciaMaoDialogo(shell, style, jogador1);
+		abreReiniciaMaoDialogo(shell, style, jogador2);
 	}
 
 	public void rodadasJogo() {
@@ -404,6 +416,11 @@ public class Tabuleiro {
 		}
 		
 		//scan.close();
+	}
+	
+	private void abreReiniciaMaoDialogo(Shell shell, int style, Jogador jogador) {
+		ReiniciaMao reiniciaMao = new ReiniciaMao(shell, style, jogador);
+		reiniciaMao.open(jogador);
 	}
 		
 	//Valida o numero de cartas na mesa.

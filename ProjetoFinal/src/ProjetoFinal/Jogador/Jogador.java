@@ -82,7 +82,7 @@ public class Jogador {
 		Random gerador = new Random();
 		int i = 0;
 		while (i < 4) {
-			int cartaAleatoria = gerador.nextInt(this.deck.verCartas().size()); // De acordo com o número de cartas do Deck
+			int cartaAleatoria = gerador.nextInt(this.deck.verCartas().size()); // De acordo com o nï¿½mero de cartas do Deck
 			if (!cartasNaMao.contains(this.deck.verCartas().get(cartaAleatoria))) {
 				Carta carta = this.deck.verCartas().get(cartaAleatoria);
 				this.cartasNaMao.add(carta);
@@ -105,7 +105,7 @@ public class Jogador {
 	}
 	
 	public void reiniciarCartasNaMao(int quantidade) {
-		//Método para redefinir as cartas na mão do jogador
+		//Mï¿½todo para redefinir as cartas na mï¿½o do jogador
 		//Cria uma nova lista de cartas, copia as cartasNaMao para a lista
 		//Pega as novas cartas
 		//Relocar as cartas tiradas de volta no baralho
