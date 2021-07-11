@@ -113,7 +113,7 @@ public class Carta {
 		}
 	}
 	
-	public void removerEveitos(Tabuleiro t,Jogador j) {
+	public void removerEfeitos(Tabuleiro t,Jogador j) {
 		for(int i=0; i< efeitos.size(); i++) {
 			Efeito e = efeitos.get(i);
 				e.removerEfeitoAplicado(t, j);
