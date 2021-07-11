@@ -1,7 +1,7 @@
 package ProjetoFinal.Evoluir;
 
-import ProjetoFinal.Carta.Seguidores;
+import ProjetoFinal.Carta.Campeoes;
 
 public interface Evolucao {
-	public void evoluir(Seguidores card); 
+	public void evoluir(Campeoes card); 
 }

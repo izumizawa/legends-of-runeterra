@@ -1,6 +1,7 @@
 package ProjetoFinal.Evoluir;
 
-import ProjetoFinal.Carta.Seguidores;
+import ProjetoFinal.Carta.Campeoes;
+
 
 public class AumentarPoder implements Evolucao{
 	private int poder;
@@ -9,7 +10,7 @@ public class AumentarPoder implements Evolucao{
 		poder = n;
 	}
 	@Override
-	public void evoluir(Seguidores card) {
+	public void evoluir(Campeoes card) {
 		// TODO Auto-generated method stub
 		int danoAtual = card.verDanoAtual();
 		int novoDano = danoAtual + poder;

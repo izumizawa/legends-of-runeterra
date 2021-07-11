@@ -1,6 +1,6 @@
 package ProjetoFinal.Evoluir;
 
-import ProjetoFinal.Carta.Seguidores;
+import ProjetoFinal.Carta.Campeoes;
 
 public class AumentarVida implements Evolucao{
 	private int vida;
@@ -11,7 +11,7 @@ public class AumentarVida implements Evolucao{
 	
 	
 	@Override
-	public void evoluir(Seguidores card) {
+	public void evoluir(Campeoes card) {
 		// TODO Auto-generated method stub
 		int vidaAtual = card.verVidaAtual();
 		int novaVida = vidaAtual + vida;

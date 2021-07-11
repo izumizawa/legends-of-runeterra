@@ -47,6 +47,11 @@ public class Carta {
 		inimigo.sofrerDano(t,j,dano);
 	}
 	
+	public void atacarInimigo(Tabuleiro t,Jogador player) {
+		int dano = verDano();
+		player.sofrerDano(t,dano);
+	}
+	
 	
 	public String verNome() {
 		return nome;
