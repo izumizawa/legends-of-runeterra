@@ -57,7 +57,7 @@ public class ReiniciaMao extends Dialog {
 	 */
 	private void createContents(Jogador jogador) {
 		shell = new Shell(getParent(), getStyle());
-		shell.setSize(450, 300);
+		shell.setSize(450, 200);
 		shell.setText(getText());
 		shell.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		

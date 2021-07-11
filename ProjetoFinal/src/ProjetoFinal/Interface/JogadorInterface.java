@@ -8,7 +8,9 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-public class IJogador extends Composite {
+import ProjetoFinal.Jogador.Jogador;
+
+public class JogadorInterface extends Composite {
 	private Table table;
 
 	/**
@@ -16,7 +18,7 @@ public class IJogador extends Composite {
 	 * @param parent
 	 * @param style
 	 */
-	public IJogador(Composite parent, int style, ProjetoFinal.Jogador.Jogador jogador) {
+	public JogadorInterface(Composite parent, int style, Jogador jogador) {
 		super(parent, style);
 		setLayout(new GridLayout(1, false));
 		
@@ -38,6 +40,9 @@ public class IJogador extends Composite {
 		TableItem tableItem = new TableItem(table, SWT.NONE);
 		tableItem.setText(new String[] { "Jogador", jogador.verNome() });
 		
+		TableItem tableItem_4 = new TableItem(table, SWT.NONE);
+		tableItem_4.setText(new String[] {"Turno", verificarAtacante(jogador) });
+		
 		TableItem tableItem_1 = new TableItem(table, SWT.NONE);
 		tableItem_1.setText(new String[] { "Mana", String.valueOf(jogador.verMana()) });
 		
@@ -47,6 +52,13 @@ public class IJogador extends Composite {
 		TableItem tableItem_3 = new TableItem(table, SWT.NONE);
 		tableItem_3.setText(new String[] { "Deck", String.valueOf(jogador.verDeck().verCartas().size())});
 
+	}
+	
+	private String verificarAtacante(Jogador jogador) {
+		String papel = "Defensor";
+		if (jogador.verAtaque())
+			papel = "Atacante";
+		return papel;
 	}
 
 	@Override

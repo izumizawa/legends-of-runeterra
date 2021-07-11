@@ -1,14 +1,33 @@
 package ProjetoFinal.Interface;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import ProjetoFinal.Carta.Carta;
+import ProjetoFinal.Carta.Campeoes;
+import ProjetoFinal.Carta.Feiticos;
+import ProjetoFinal.Carta.Seguidores;
 import ProjetoFinal.Deck.Deck;
+import ProjetoFinal.Efeitos.AtacarDiretamente;
+import ProjetoFinal.Efeitos.CombateImediato;
+import ProjetoFinal.Efeitos.ComprarCartaAoSerDestruido;
+import ProjetoFinal.Efeitos.DanificarNexus;
+import ProjetoFinal.Efeitos.DobrarAtaqueEDefesa;
+import ProjetoFinal.Efeitos.EvocarCartaTipoEspecifico;
+import ProjetoFinal.Efeitos.MelhorarTodosAliados;
+import ProjetoFinal.Efeitos.MelhorarUmAliado;
+import ProjetoFinal.Efeitos.RecuperarVidaAliado;
+import ProjetoFinal.Efeitos.UmAliadoAtacaTodosInimigos;
+import ProjetoFinal.Efeitos.ZerarAtaque;
+import ProjetoFinal.Evoluir.AdicionarHabilidade;
+import ProjetoFinal.Evoluir.AumentarPoder;
+import ProjetoFinal.Evoluir.AumentarVida;
 import ProjetoFinal.ItensAdicionais.Status;
+import ProjetoFinal.ItensAdicionais.TipoEvolucao;
 import ProjetoFinal.Jogador.Jogador;
-import ProjetoFinal.Tabuleiro.Tabuleiro;
+import ProjetoFinal.Tabuleiro.TabuleiroInterface;
+import ProjetoFinal.Tracos.AtaqueDuplo;
+import ProjetoFinal.Tracos.Elusivo;
+import ProjetoFinal.Tracos.Furia;
 
 public class App {
 
@@ -22,93 +41,94 @@ public class App {
 
 		Display display = Display.getDefault();
 		Shell shell = new Shell();
-		shell.setSize(1000, 600);
+		shell.setSize(800, 600);
 		shell.setText("Legends of Runeterra");
 		
-	
-		Status status1 = new Status(1,1,1);	
-		Status status2 = new Status(1,2,2);
-		Status status3 = new Status(1,3,3);
-		Status status4 = new Status(1,4,4);
-		Status status5 = new Status(1,5,5);
-		Status status6 = new Status(1,6,6);
-		Status status7 = new Status(1,7,7);
-		Status status8 = new Status(1,8,8);
-		Status status9 = new Status(1,9,9);
-		Status status10 = new Status(1,10,10);
-		Status status11 = new Status(1,11,11);
-		Status status12 = new Status(1,12,12);
-		Status status13 = new Status(1,13,13);
-		Status status14 = new Status(1,14,14);
-		Status status15 = new Status(1,15,15);
-		Status status16 = new Status(1,16,16);
-		Status status17 = new Status(1,17,17);
-		Status status18 = new Status(1,18,18);
-		Status status19 = new Status(1,19,19);
-		Status status20 = new Status(1,20,20);
+		//Status
+		Status garenS = new Status(5,5,5);	
+		Status tianaS = new Status(8,7,7);
+		Status vanguardaS = new Status(4,3,3);
+		Status duelistaS = new Status(3,3,2);
+		Status defensorS = new Status(2,2,2);
+		Status poroS = new Status(2,2,2);
+		Status poroDefensorS = new Status(1,2,1);
+		Status julgamentoS = new Status(8);
+		Status valorRedobradoS = new Status(6);
+		Status golpeCerteiroS = new Status(1);
+		Status comabateUmAUmS = new Status(2);
+		Status furiaS = new Status(0,0,1);
 		
-		Carta carta1 = new Carta("carta 1", status1);
-		Carta carta2 = new Carta("carta 2", status2);
-		Carta carta3 = new Carta("carta 3", status3);
-		Carta carta4 = new Carta("carta 4", status4);
-		Carta carta5 = new Carta("carta 5", status5);
-		Carta carta6 = new Carta("carta 6", status6);
-		Carta carta7 = new Carta("carta 7", status7);
-		Carta carta8 = new Carta("carta 8", status8);
-		Carta carta9 = new Carta("carta 9", status9);
-		Carta carta10 = new Carta("carta 10", status10);
-		Carta carta11 = new Carta("carta 11", status11);
-		Carta carta12 = new Carta("carta 12", status12);
-		Carta carta13 = new Carta("carta 13", status13);
-		Carta carta14 = new Carta("carta 14", status14);
-		Carta carta15 = new Carta("carta 15", status15);
-		Carta carta16 = new Carta("carta 16", status16);
-		Carta carta17 = new Carta("carta 17", status17);
-		Carta carta18 = new Carta("carta 18", status18);
-		Carta carta19 = new Carta("carta 19", status19);
-		Carta carta20 = new Carta("carta 20", status20);
+		//Efeitos
+		AtacarDiretamente atacarDiretamente = new AtacarDiretamente();
+		CombateImediato combateImediato = new CombateImediato();
+		ComprarCartaAoSerDestruido comprarCartasAoSerDestruido = new ComprarCartaAoSerDestruido();
+		DanificarNexus danificarNexus = new DanificarNexus(5);
+		DobrarAtaqueEDefesa dobrarAtaqueEDefesa = new DobrarAtaqueEDefesa();
+		EvocarCartaTipoEspecifico evocarCartaTipoEspecifico = new EvocarCartaTipoEspecifico("Poro");
+		MelhorarTodosAliados melhorarTodosAliados = new MelhorarTodosAliados(1,1);
+		MelhorarUmAliado melhorarUmAliado = new MelhorarUmAliado(1,1);
+		RecuperarVidaAliado recuperarVidaAliado = new RecuperarVidaAliado();
+		UmAliadoAtacaTodosInimigos umAliadoAtacaTodosInimigos = new UmAliadoAtacaTodosInimigos();
+		ZerarAtaque zerarAtaque = new ZerarAtaque();
 		
+		//Traco
+		AtaqueDuplo ataqueDuplo = new AtaqueDuplo();
+		Elusivo elusivo = new Elusivo();
+		Furia furia = new Furia(furiaS);
+		
+		//Evolucao
+		AdicionarHabilidade adicionarHabilidade = new AdicionarHabilidade(elusivo);
+		AumentarPoder aumentarPoder = new AumentarPoder(1);
+		AumentarVida aumentarVida = new AumentarVida(1);
+		
+		//Cartas
+		Campeoes garen = new Campeoes("Garen", garenS , null, adicionarHabilidade, TipoEvolucao.Atacar, 2);
+		Seguidores tiana = new Seguidores("Tiana", tianaS, danificarNexus);
+		Seguidores vanguarda = new Seguidores("Vanguarda", vanguardaS, melhorarTodosAliados);
+		Seguidores duelista = new Seguidores("Duelista", duelistaS, evocarCartaTipoEspecifico);
+		Seguidores defensor = new Seguidores("Defensor", defensorS, furia);
+		Seguidores poro = new Seguidores("Poro", poroS);
+		Seguidores poroDefensor = new Seguidores("Poro Defensor", poroDefensorS, comprarCartasAoSerDestruido);
+		Feiticos julgamento = new Feiticos("Julgamento", julgamentoS, umAliadoAtacaTodosInimigos);
+		Feiticos valorRedobrado = new Feiticos("Valor Redobrado", valorRedobradoS, recuperarVidaAliado);
+		Feiticos golpeCerteiro = new Feiticos("Golpe Certeiro", golpeCerteiroS, melhorarUmAliado);
+		Feiticos combateUmAUm = new Feiticos("Combate um a um", comabateUmAUmS, combateImediato);
+
+		//Decks
 		Deck deck1 = new Deck();
 		Deck deck2 = new Deck();
 		
-		deck1.adicionarCarta(carta1);
-		deck1.adicionarCarta(carta2);
-		deck1.adicionarCarta(carta3);
-		deck1.adicionarCarta(carta4);
-		deck1.adicionarCarta(carta5);
-		deck1.adicionarCarta(carta6);
-		deck1.adicionarCarta(carta7);
-		deck1.adicionarCarta(carta8);
-		deck1.adicionarCarta(carta9);
-		deck1.adicionarCarta(carta10);
+		deck1.adicionarCarta(garen);
+		deck1.adicionarCarta(tiana);
+		deck1.adicionarCarta(vanguarda);
+		deck1.adicionarCarta(duelista);
+		deck1.adicionarCarta(defensor);
+		deck1.adicionarCarta(poro);
+		deck1.adicionarCarta(poroDefensor);
+		deck1.adicionarCarta(julgamento);
+		deck1.adicionarCarta(valorRedobrado);
+		deck1.adicionarCarta(golpeCerteiro);
+		deck1.adicionarCarta(combateUmAUm);
 		
-		deck2.adicionarCarta(carta11);
-		deck2.adicionarCarta(carta12);
-		deck2.adicionarCarta(carta13);
-		deck2.adicionarCarta(carta14);
-		deck2.adicionarCarta(carta15);
-		deck2.adicionarCarta(carta16);
-		deck2.adicionarCarta(carta17);
-		deck2.adicionarCarta(carta18);
-		deck2.adicionarCarta(carta19);
-		deck2.adicionarCarta(carta20);
+		deck2.adicionarCarta(garen);
+		deck2.adicionarCarta(tiana);
+		deck2.adicionarCarta(vanguarda);
+		deck2.adicionarCarta(duelista);
+		deck2.adicionarCarta(defensor);
+		deck2.adicionarCarta(poro);
+		deck2.adicionarCarta(poroDefensor);
+		deck2.adicionarCarta(julgamento);
+		deck2.adicionarCarta(valorRedobrado);
+		deck2.adicionarCarta(golpeCerteiro);
+		deck2.adicionarCarta(combateUmAUm);
 		
 		Jogador jogador1 = new Jogador("Jogador 1", deck1);
-		IJogador ijogador1 = new IJogador(shell, SWT.NONE, jogador1);
-		ijogador1.setBounds(0, 0, 300, 150);
-		
 		Jogador jogador2 = new Jogador("Jogador 2", deck2);
-		IJogador ijogador2 = new IJogador(shell, SWT.NONE, jogador2);
-		ijogador2.setBounds(0, 400, 300, 150);
-
-		Tabuleiro tabuleiro = new Tabuleiro(jogador1, jogador2);
-
-		ImpressaoCartas cartasDefesa = new ImpressaoCartas(shell, SWT.NONE, tabuleiro.verCartasDefesa());
-		ImpressaoCartas cartasAtaque = new ImpressaoCartas(shell, SWT.NONE, tabuleiro.verCartasAtaque());
-		cartasAtaque.setBounds(0, 0, 0, 0);
+		TabuleiroInterface tabuleiro = new TabuleiroInterface(jogador1, jogador2);
 		
-		tabuleiro.iniciaJogoInterface(shell, SWT.NONE);
-//		tabuleiro.rodadasJogo();
+		tabuleiro.iniciaJogo(shell);
+		
+		tabuleiro.rodadasJogo(shell);
 		
 		
 		shell.open();

@@ -3,19 +3,15 @@ package ProjetoFinal.Tabuleiro;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import org.eclipse.swt.widgets.Shell;
-
 import ProjetoFinal.Carta.Carta;
 import ProjetoFinal.Carta.Feiticos;
-import ProjetoFinal.Interface.ImpressaoCartas;
-import ProjetoFinal.Interface.ReiniciaMao;
 import ProjetoFinal.Jogador.Jogador;
 
 
 public class Tabuleiro {
 	private Jogador jogador1, jogador2;
 	private ArrayList <Carta> cartas_evocadas1, cartas_evocadas2, cartas_ataque, cartas_defesa;
-	private int rodada;
+	protected int rodada;
 	private boolean bloquear_dano1, bloquear_dano2;
 	
 	public Tabuleiro(Jogador jogador1, Jogador jogador2) {
@@ -52,7 +48,14 @@ public class Tabuleiro {
 	public ArrayList<Carta> verCartasDefesa(){
 		return this.cartas_defesa;
 	}
-		
+	
+	public ArrayList<Carta> verCartasEvocadas1(){
+		return this.cartas_evocadas1;
+	}
+	
+	public ArrayList<Carta> verCartasEvocadas2(){
+		return this.cartas_evocadas2;
+	}		
 	
 	public boolean verBloqueioDano(Jogador jogador) {
 		if(this.jogador1.equals(jogador)) {
@@ -72,6 +75,9 @@ public class Tabuleiro {
 		}
 	}
 	
+	public int verRodada() {
+		return this.rodada;
+	}
 	
 	
 	// Adiciona a carta ÃƒÂ  mesa. Explicitar se ÃƒÂ© jogador 1 ou 2.
@@ -136,14 +142,6 @@ public class Tabuleiro {
 		System.out.println("**** Cartas finais de "+this.jogador2.verNome()+":");
 		imprimeCartasdaMao(jogador2);
 		
-	}
-	
-	public void iniciaJogoInterface(Shell shell, int style) {
-		jogador1.iniciarCartasNaMao();
-		jogador2.iniciarCartasNaMao();
-	
-		abreReiniciaMaoDialogo(shell, style, jogador1);
-		abreReiniciaMaoDialogo(shell, style, jogador2);
 	}
 
 	public void rodadasJogo() {
@@ -284,7 +282,7 @@ public class Tabuleiro {
 		}		
 	}
 	
-	private boolean consomeMana(Jogador jogador, Carta carta_jogada) {
+	protected boolean consomeMana(Jogador jogador, Carta carta_jogada) {
 		int custoMana = carta_jogada.verCustoMana();
 		int manaJogador = jogador.verMana();
 		int manaFeitico = jogador.verManaFeitico();
@@ -308,14 +306,14 @@ public class Tabuleiro {
 		return false;
 	}
 		
-	private boolean verificaCartaEvocavel(Carta carta_recebida) {
+	protected boolean verificaCartaEvocavel(Carta carta_recebida) {
 		if(carta_recebida instanceof Feiticos) {
 			return false;
 		}
 		return true;
 	}
 	
-	private Jogador jogadorAtacante(Jogador jogador_a, Jogador jogador_b) {	
+	protected Jogador jogadorAtacante(Jogador jogador_a, Jogador jogador_b) {	
 		if(jogador_a.verAtaque() == true) {
 			jogador_b.definirAtaque(true);
 			jogador_a.definirAtaque(false);
@@ -329,7 +327,7 @@ public class Tabuleiro {
 		
 	}
 	
-	private Jogador jogadorDefensor(Jogador jogador_ataq) {		
+	protected Jogador jogadorDefensor(Jogador jogador_ataq) {		
 		if(this.jogador1.equals(jogador_ataq)) {
 			return this.jogador2;
 		}
@@ -417,14 +415,10 @@ public class Tabuleiro {
 		
 		//scan.close();
 	}
-	
-	private void abreReiniciaMaoDialogo(Shell shell, int style, Jogador jogador) {
-		ReiniciaMao reiniciaMao = new ReiniciaMao(shell, style, jogador);
-		reiniciaMao.open(jogador);
-	}
+
 		
 	//Valida o numero de cartas na mesa.
-	private boolean checaNumeroCartasEvocadas(int numero_cartas, int tipo) {
+	protected boolean checaNumeroCartasEvocadas(int numero_cartas, int tipo) {
 		if(tipo == 1) {
 			if(numero_cartas < 6) {
 				return true;
@@ -459,7 +453,7 @@ public class Tabuleiro {
 		return resposta;
 	}
 	
-	private void definirManaInicial() {
+	protected void definirManaInicial() {
 		if (rodada < 10) {
 			jogador1.definirMana(rodada);
 			jogador2.definirMana(rodada);
@@ -469,7 +463,7 @@ public class Tabuleiro {
 		}
 	}
 	
-	private void definirManaFinal(Jogador jogador) {
+	protected void definirManaFinal(Jogador jogador) {
 		if ((jogador.verMana() > 3)) {
 			jogador.definirManaFeitico(3);
 		}	
@@ -485,5 +479,7 @@ public class Tabuleiro {
 		jogador.definirMana(0);
 		}
 	}
+	
+
 }
 
