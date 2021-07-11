@@ -37,15 +37,15 @@ public class Deck {
 	}
 	
 	public Carta pegarCartaEspecifica(String nome) {
-		Carta carta = new Carta();
+		Carta carta;
 		Iterator<Carta> it = cartas.iterator();
 		while(it.hasNext()) {
 			carta = it.next();
 			if(carta.verNome().contains(nome)) {
-				break;
+				return carta;
 			}
 		}
-		return carta;
+		return null;
 	}
 
 }

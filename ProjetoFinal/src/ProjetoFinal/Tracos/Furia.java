@@ -15,7 +15,7 @@ public class Furia implements Traco{
 	@Override
 	public void atacarInimigo(Tabuleiro t,Jogador j,Seguidores card, Seguidores inimigo) {
 		// TODO Auto-generated method stub
-		card.atacarInimigo(t,j,inimigo);
+		atacar(t,j,card,inimigo);
 		if(inimigo.verVidaAtual() <= 0) {
 			int danoAtual = card.verDanoAtual();
 			int vidaAtual = card.verVidaAtual();
@@ -29,7 +29,19 @@ public class Furia implements Traco{
 	@Override
 	public String verTipo() {
 		// TODO Auto-generated method stub
-		return null;
+		return tipo;
+	}
+	
+	private void atacar(Tabuleiro t,Jogador j, Seguidores card,Seguidores inimigo) {
+		Jogador oponente = t.verOponente(j);
+		int dano = card.verDanoAtual();
+		boolean bloquear = t.verBloqueioDano(oponente);
+		if(!bloquear) {
+			inimigo.sofrerDano(t, j,dano);
+		}
+		else {
+			t.defBloqueioDano(oponente, false);
+		}
 	}
 
 }

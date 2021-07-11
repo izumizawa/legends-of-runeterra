@@ -26,15 +26,22 @@ public class Seguidores extends Carta {
 	
 	@Override
 	public void atacarInimigo(Tabuleiro t, Jogador j,Seguidores inimigo) {
+		Jogador oponente = t.verOponente(j);
 		if(traco == null) {
 			int dano = verDanoAtual();
-			inimigo.sofrerDano(t,j,dano);
+			boolean bloquear = t.verBloqueioDano(oponente);
+			if(!bloquear) {
+				inimigo.sofrerDano(t, j,dano);
+			}
+			else {
+				t.defBloqueioDano(oponente, false);
+			}
 		}
 		else {
-			traco.atacarInimigo(t, j, inimigo, inimigo);
+			traco.atacarInimigo(t, j, this, inimigo);
 		}
-		
 	}
+		
 	
 	//Implementando ataque direto
 	public void atacarInimigo(Tabuleiro t,Jogador player) {
@@ -47,9 +54,12 @@ public class Seguidores extends Carta {
 		definirVidaAtual(vida - dano);
 	}
 
-	public String verTraco() {
+	public String verTipoTraco() {
 		// TODO Auto-generated method stub
 		return traco.verTipo();
+	}
+	public Traco verTraco() {
+		return traco;
 	}
 	
 	public void adicionarTraco(Traco t) {

@@ -40,28 +40,48 @@ public class Campeoes extends Seguidores{
 	
 	@Override
 	public void atacarInimigo(Tabuleiro t, Jogador j,Seguidores inimigo) {
-		super.atacarInimigo(t,j,inimigo);
-		if(tipoEvolucao == TipoEvolucao.Atacar) {
-			andamentoCondicao += 1;
+		Jogador oponente = t.verOponente(j);
+		Traco tracoCampeao = verTraco();
+		boolean atacou = true;
+		if(t.verBloqueioDano(oponente)) {
+			atacou=false;
 		}
-		else if(tipoEvolucao ==  TipoEvolucao.Matar) {
-			int vidaInimigo = inimigo.verVidaTotal();
-			if(vidaInimigo<=0) {
-				if(inimigo instanceof Seguidores) {
-					andamentoCondicao+=1;
-				}
-				ArrayList<Efeito> efeitos = verEfeitos();
-				Iterator<Efeito> it = efeitos.iterator();
-				while(it.hasNext()) {
-					Efeito e = it.next();
-					if(e.verTipo() == TipoEfeito.Destruido) {
-						e.aplicarEfeitos(t, j);
+		if(tracoCampeao == null) {
+			int dano = verDanoAtual();
+			boolean bloquear = t.verBloqueioDano(oponente);
+			if(!bloquear) {
+				inimigo.sofrerDano(t, j,dano);
+			}
+			else {
+				t.defBloqueioDano(oponente, false);
+			}
+		}
+		else {
+			tracoCampeao.atacarInimigo(t, j, this, inimigo);
+		}
+		if(atacou) {
+			if(tipoEvolucao == TipoEvolucao.Atacar) {
+				andamentoCondicao += 1;
+			}
+			else if(tipoEvolucao ==  TipoEvolucao.Matar) {
+				int vidaInimigo = inimigo.verVidaTotal();
+				if(vidaInimigo<=0) {
+					if(inimigo instanceof Seguidores) {
+						andamentoCondicao+=1;
+					}
+					ArrayList<Efeito> efeitos = verEfeitos();
+					Iterator<Efeito> it = efeitos.iterator();
+					while(it.hasNext()) {
+						Efeito e = it.next();
+						if(e.verTipo() == TipoEfeito.Destruido) {
+							e.aplicarEfeitos(t, j);
+						}
 					}
 				}
 			}
-		}
-		else if(tipoEvolucao == TipoEvolucao.DarDano) {
-			andamentoCondicao += verDanoAtual();
+			else if(tipoEvolucao == TipoEvolucao.DarDano) {
+				andamentoCondicao += verDanoAtual();
+			}
 		}
 		evoluir();
 	}
