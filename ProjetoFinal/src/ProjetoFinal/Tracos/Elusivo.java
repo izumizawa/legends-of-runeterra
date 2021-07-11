@@ -15,19 +15,31 @@ public class Elusivo implements Traco{
 	@Override
 	public void atacarInimigo(Tabuleiro t, Jogador j,Seguidores card, Seguidores inimigo) {
 		// TODO Auto-generated method stub
-		if(inimigo.verTraco().equals(tipo)) {
-			card.atacarInimigo(t,j,inimigo);
+		if(inimigo.verTipoTraco().equals(tipo)) {
+			atacar(t,j,card,inimigo);
 		}
 		else {
 			Jogador oponente = t.verOponente(j);
 			card.atacarInimigo(t,oponente);
-			
 		}
 		
 	}
 
 	public String verTipo() {
 		return tipo;
+	}
+	
+	
+	private void atacar(Tabuleiro t,Jogador j, Seguidores card,Seguidores inimigo) {
+		Jogador oponente = t.verOponente(j);
+		int dano = card.verDanoAtual();
+		boolean bloquear = t.verBloqueioDano(oponente);
+		if(!bloquear) {
+			inimigo.sofrerDano(t, j,dano);
+		}
+		else {
+			t.defBloqueioDano(oponente, false);
+		}
 	}
 	
 }

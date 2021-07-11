@@ -8,20 +8,27 @@ import ProjetoFinal.Jogador.Jogador;
 import ProjetoFinal.Tabuleiro.Tabuleiro;
 
 public class ZerarAtaque implements Efeito {
-private TipoEfeito tipo;
+	private TipoEfeito tipo;
+	private int indiceAlterado;
+	private int danoAnterior;
 	
 	public ZerarAtaque() {
 		tipo = TipoEfeito.Evocado;
+		indiceAlterado = -1;
+		danoAnterior = -1;
 	}
 
 	@Override
 	public void aplicarEfeitos(Tabuleiro t, Jogador jogador) {
 		// TODO Auto-generated method stub
 		int indice = coletarEntrada();
-		while(indice >= t.encontraCartasEvocadas(jogador).size()) {
+		Jogador inimigo = t.verOponente(jogador);
+		while(indice >= t.encontraCartasEvocadas(inimigo).size()) {
 			indice = coletarEntrada();
 		}
-		Carta card = t.encontraCartasEvocadas(jogador).get(indice);
+		Carta card = t.encontraCartasEvocadas(inimigo).get(indice);
+		indiceAlterado = indice;
+		danoAnterior = card.verDanoAtual();
 		card.definirDanoAtual(0);
 	}
 	private int coletarEntrada() {
@@ -38,6 +45,8 @@ private TipoEfeito tipo;
 	@Override
 	public void removerEfeitoAplicado(Tabuleiro t, Jogador jogador) {
 		// TODO Auto-generated method stub
-		
+		Jogador inimigo = t.verOponente(jogador);
+		Carta card = t.encontraCartasEvocadas(inimigo).get(indiceAlterado);
+		card.definirDanoAtual(danoAnterior);
 	}
 }

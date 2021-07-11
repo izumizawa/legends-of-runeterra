@@ -14,8 +14,6 @@ public class Carta {
 	private Status valoresCartaAtual;
 	private ArrayList<Efeito> efeitos;
 	
-	
-	public Carta() {}
 
 	public Carta(String nomeCarta,Status carta) {
 		valoresCarta = carta;
@@ -107,6 +105,13 @@ public class Carta {
 			if(e.verTipo() == TipoEfeito.Evocado) {
 				e.aplicarEfeitos(tabuleiro, jogador);
 			}
+		}
+	}
+	
+	public void removerEveitos(Tabuleiro t,Jogador j) {
+		for(int i=0; i< efeitos.size(); i++) {
+			Efeito e = efeitos.get(i);
+				e.removerEfeitoAplicado(t, j);
 		}
 	}
 }
