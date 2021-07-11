@@ -19,9 +19,16 @@ public class Seguidores extends Carta {
 		traco = t;
 	}
 	
-	@Override
-	public void adicionarEfeito(Efeito e) {
-		definirEfeitos(null);
+	public Seguidores(String nome, Status carta, Efeito e) {
+		super(nome, carta);
+		this.adicionarEfeito(e);
+		
+	}
+	
+	public Seguidores(String nome, Status carta, Traco t, Efeito e) {
+		super(nome, carta);
+		this.adicionarEfeito(e);
+		traco = t;		
 	}
 	
 	@Override
