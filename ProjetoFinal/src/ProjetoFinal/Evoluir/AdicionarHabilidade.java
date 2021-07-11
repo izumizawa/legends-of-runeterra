@@ -1,6 +1,6 @@
 package ProjetoFinal.Evoluir;
 
-import ProjetoFinal.Carta.Seguidores;
+import ProjetoFinal.Carta.Campeoes;
 import ProjetoFinal.Efeitos.Efeito;
 import ProjetoFinal.Tracos.Traco;
 
@@ -17,7 +17,7 @@ public class AdicionarHabilidade implements Evolucao {
 		efeito = novo;
 	}
 	@Override
-	public void evoluir(Seguidores card) {
+	public void evoluir(Campeoes card) {
 		// TODO Auto-generated method stub
 		if(traco!=null) {
 			card.adicionarTraco(traco);

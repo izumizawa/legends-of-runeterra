@@ -40,7 +40,7 @@ public class Seguidores extends Carta {
 			boolean bloquear = t.verBloqueioDano(oponente);
 			if(!bloquear) {
 				inimigo.sofrerDano(t, j,dano);
-				this.sofrerDano(t,j,danoDoInimigo);
+				this.sofrerDano(t,oponente,danoDoInimigo);
 			}
 			else {
 				t.defBloqueioDano(oponente, false);
