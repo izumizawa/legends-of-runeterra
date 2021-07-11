@@ -34,11 +34,13 @@ public class Seguidores extends Carta {
 	@Override
 	public void atacarInimigo(Tabuleiro t, Jogador j,Seguidores inimigo) {
 		Jogador oponente = t.verOponente(j);
+		int danoDoInimigo = inimigo.verDanoAtual();
 		if(traco == null) {
 			int dano = verDanoAtual();
 			boolean bloquear = t.verBloqueioDano(oponente);
 			if(!bloquear) {
 				inimigo.sofrerDano(t, j,dano);
+				this.sofrerDano(t,j,danoDoInimigo);
 			}
 			else {
 				t.defBloqueioDano(oponente, false);

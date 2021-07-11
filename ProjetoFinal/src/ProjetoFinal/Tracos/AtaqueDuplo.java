@@ -36,6 +36,8 @@ public class AtaqueDuplo implements Traco {
 		boolean bloquear = t.verBloqueioDano(oponente);
 		if(!bloquear) {
 			inimigo.sofrerDano(t, j,dano);
+			int danoDoInimigo = inimigo.verDanoAtual();
+			card.sofrerDano(t, j, danoDoInimigo);
 		}
 		else {
 			t.defBloqueioDano(oponente, false);
