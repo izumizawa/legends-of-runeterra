@@ -5,22 +5,23 @@ import java.util.Scanner;
 
 import ProjetoFinal.Carta.Carta;
 import ProjetoFinal.Carta.Feiticos;
+import ProjetoFinal.Carta.Seguidores;
 import ProjetoFinal.Jogador.Jogador;
 
 
 public class Tabuleiro {
 	private Jogador jogador1, jogador2;
-	private ArrayList <Carta> cartas_evocadas1, cartas_evocadas2, cartas_ataque, cartas_defesa;
+	private ArrayList <Carta> cartasEvocadas1, cartasEvocadas2, cartasAtaque, cartasDefesa;
 	private int rodada;
-	private boolean bloquear_dano1, bloquear_dano2;
+	private boolean bloquearDano1, bloquearDano2;
 	
 	public Tabuleiro(Jogador jogador1, Jogador jogador2) {
 		this.jogador1 = jogador1;
 		this.jogador2 = jogador2;
-		this.cartas_evocadas1= new ArrayList<>();
-		this.cartas_evocadas2 = new ArrayList<>();
-		this.cartas_ataque = new ArrayList<>();
-		this.cartas_defesa = new ArrayList<>();
+		this.cartasEvocadas1= new ArrayList<>();
+		this.cartasEvocadas2 = new ArrayList<>();
+		this.cartasAtaque = new ArrayList<>();
+		this.cartasDefesa = new ArrayList<>();
 		this.rodada = 0;
 	}
 		
@@ -42,46 +43,44 @@ public class Tabuleiro {
 	}
 	
 	public ArrayList<Carta> verCartasAtaque(){
-		return this.cartas_ataque;
+		return this.cartasAtaque;
 	}
 	
 	public ArrayList<Carta> verCartasDefesa(){
-		return this.cartas_defesa;
+		return this.cartasDefesa;
 	}
 		
 	
 	public boolean verBloqueioDano(Jogador jogador) {
 		if(this.jogador1.equals(jogador)) {
-			return this.bloquear_dano1;
+			return this.bloquearDano1;
 		}
-		return this.bloquear_dano2;
+		return this.bloquearDano2;
 	}
 	
 	
 	public void defBloqueioDano(Jogador jogador, boolean valor) {
 		if(this.jogador1.equals(jogador)) {
-			this.bloquear_dano1 = valor;
+			this.bloquearDano1 = valor;
 			
 		}
 		else {
-			this.bloquear_dano2 = valor;
+			this.bloquearDano2 = valor;
 		}
 	}
 	
-	
-	
-	// Adiciona a carta ÃƒÂ  mesa. Explicitar se ÃƒÂ© jogador 1 ou 2.
-	public void adcCartasEvocadas(Carta carta_abaixada, Jogador jogador) {
+	// Adiciona a carta a� mesa. Explicitar se e jogador 1 ou 2.
+	public void adcCartasEvocadas(Carta cartaAbaixada, Jogador jogador) {
 		if(jogador.equals(jogador1)) {
-			if(checaNumeroCartasEvocadas(this.cartas_evocadas1.size(), 1)) {
-				this.cartas_evocadas1.add(carta_abaixada);
+			if(checaNumeroCartasEvocadas(this.cartasEvocadas1.size(), 1)) {
+				this.cartasEvocadas1.add(cartaAbaixada);
 				return; 
 			}
 		}
 		
 		else if(jogador.equals(jogador2)) {
-			if(checaNumeroCartasEvocadas(this.cartas_evocadas2.size(), 1)) {
-				this.cartas_evocadas2.add(carta_abaixada);
+			if(checaNumeroCartasEvocadas(this.cartasEvocadas2.size(), 1)) {
+				this.cartasEvocadas2.add(cartaAbaixada);
 				return;
 			}
 		}
@@ -92,21 +91,17 @@ public class Tabuleiro {
 		combate.add(carta);
 	}
 	
-	private void remvCartasCombate(Carta carta, ArrayList<Carta> combate) {
-		combate.remove(carta);
-	}
-	
 	//Remove carta da mesa.
-	public void rmvCartasEvocadas(Carta carta_removida, Jogador jogador) {
+	public void rmvCartasEvocadas(Carta cartaRemovida, Jogador jogador) {
 		if(jogador.equals(jogador1)) {
-			if(checaNumeroCartasEvocadas(this.cartas_evocadas1.size(), 0)) {
-				this.cartas_evocadas1.remove(carta_removida);
+			if(checaNumeroCartasEvocadas(this.cartasEvocadas1.size(), 0)) {
+				this.cartasEvocadas1.remove(cartaRemovida);
 			}
 		}
 		
 		else if(jogador.equals(jogador2)) {
-			if(checaNumeroCartasEvocadas(this.cartas_evocadas2.size(), 0)) {
-				this.cartas_evocadas2.remove(carta_removida);
+			if(checaNumeroCartasEvocadas(this.cartasEvocadas2.size(), 0)) {
+				this.cartasEvocadas2.remove(cartaRemovida);
 			}
 		}
 		
@@ -114,6 +109,31 @@ public class Tabuleiro {
 			return;
 		}
 	}
+	
+	private void rmvEfeitosEvocados() {
+		for(int i = 0; i < this.cartasEvocadas1.size(); i ++) {
+			Carta carta = this.cartasEvocadas1.get(i);
+			carta.removerEfeitos(this, jogador1);
+		}
+		
+		for(int i = 0; i < this.cartasEvocadas2.size(); i ++) {
+			Carta carta = this.cartasEvocadas2.get(i);
+			carta.removerEfeitos(this, jogador2);
+		}
+	}
+	
+	private void rmvEfeitosCombate(Jogador jogadorAtaq, Jogador jogadorDef) {
+		for(int i = 0; i < this.cartasAtaque.size(); i ++) {
+			Carta carta = this.cartasAtaque.get(i);
+			carta.removerEfeitos(this, jogadorAtaq);
+		}
+		
+		for(int i = 0; i < this.cartasDefesa.size(); i ++) {
+			Carta carta = this.cartasDefesa.get(i);
+			carta.removerEfeitos(this, jogadorDef);
+		}
+	}
+	
 	
 	public void iniciaJogo() {
 		jogador1.iniciarCartasNaMao();
@@ -142,52 +162,85 @@ public class Tabuleiro {
 			this.rodada ++;
 			definirManaInicial();
 				
-			Jogador jogador_ataq = jogadorAtacante(this.jogador1, this.jogador2);
-			Jogador jogador_def = jogadorDefensor(jogador_ataq);
+			Jogador jogadorAtaq = jogadorAtacante(this.jogador1, this.jogador2);
+			Jogador jogadorDef = jogadorDefensor(jogadorAtaq);
 			imprimeCampo();
 			
-			turnoJogada(jogador_ataq);
-			turnoAtaque(jogador_ataq);
+			turnoJogada(jogadorAtaq);
+			turnoAtaque(jogadorAtaq);
 			
-			turnoJogada(jogador_def);
-			turnoDefesa(jogador_def);
+			turnoJogada(jogadorDef);
+			turnoDefesa(jogadorDef);
 			
-			turnoBatalha();
+			turnoBatalha(jogadorAtaq, jogadorDef);
 			
-			definirManaFinal(jogador_ataq);
-			definirManaFinal(jogador_def);
+			definirManaFinal(jogadorAtaq);
+			definirManaFinal(jogadorDef);
 		}	
 	}
 			
-	private void turnoBatalha() {
+	private void turnoBatalha(Jogador jogadorAtaq, Jogador jogadorDef) {
+		System.out.println("TURNO DE BATALHA");
 		
+		imprimeBatalha(this.cartasAtaque);
+		imprimeBatalha(this.cartasDefesa);
+				
+		for(int i = 0; i < this.cartasAtaque.size(); i++) {
+			Seguidores seguidorAtaq = (Seguidores) this.cartasAtaque.get(i);
+			if(i < this.cartasDefesa.size()) {
+				Seguidores seguidorDef = (Seguidores) this.cartasDefesa.get(i);			
+				seguidorAtaq.atacarInimigo(this, jogadorAtaq, seguidorDef);				
+			}
+			else {
+				seguidorAtaq.atacarInimigo(this, jogadorDef);
+			}
+		}
+		
+		rmvEfeitosEvocados();
+		rmvEfeitosCombate(jogadorAtaq, jogadorDef);
+				
+		for(int i = 0; i < this.cartasAtaque.size(); i++) {
+			Seguidores seguidorAtaq = (Seguidores) this.cartasAtaque.get(i);
+			if(i < this.cartasDefesa.size()) {
+				Seguidores seguidorDef = (Seguidores) this.cartasDefesa.get(i);
+				if(seguidorDef.verVidaAtual() > 0) {
+					adcCartasEvocadas(seguidorDef, jogadorDef);
+				}			
+			}
+			if(seguidorAtaq.verVidaAtual() > 0) {
+				adcCartasEvocadas(seguidorAtaq, jogadorAtaq);
+			}
+		}
+		
+		this.cartasAtaque.removeAll(cartasAtaque);
+		this.cartasDefesa.removeAll(cartasDefesa);	
 	}
 	
 	private void turnoDefesa(Jogador defensor) {
 		
 		System.out.println("Deseja defender? s/n");
 		String resposta = leInformacaoStr();
-		int numero_carta = 0;
+		int numeroCarta = 0;
 		boolean iteracao = true;
-		ArrayList <Carta> cartas_evocadas = encontraCartasEvocadas(defensor);
+		ArrayList <Carta> cartasEvocadas = encontraCartasEvocadas(defensor);
 		
 		
 		if(resposta.equals("s")) {
 			
-			System.out.println("Escolha o nÃºmero das cartas para colocar no campo de batalha!");
+			System.out.println("Escolha o numero das cartas para colocar no campo de batalha!");
 			
 			while(iteracao) {
-				imprimeCartasEvocadas(cartas_evocadas);
+				imprimeCartasEvocadas(cartasEvocadas);
 				System.out.println("Pressione 0 para concluir");
-				numero_carta = (leInformacaoInt() - 1);
+				numeroCarta = (leInformacaoInt() - 1);
 				
-				if((numero_carta == -1) || (numero_carta > cartas_evocadas.size())) {
+				if((numeroCarta == -1) || (numeroCarta > cartasEvocadas.size())) {
 					iteracao = false;
 				}
 				
 				else  {
-					adcCartasCombate(cartas_evocadas.get(numero_carta), this.cartas_defesa);
-					rmvCartasEvocadas(cartas_evocadas.get(numero_carta), defensor);
+					adcCartasCombate(cartasEvocadas.get(numeroCarta), this.cartasDefesa);
+					rmvCartasEvocadas(cartasEvocadas.get(numeroCarta), defensor);
 				}	
 			}		
 		}		
@@ -197,9 +250,9 @@ public class Tabuleiro {
 		
 		System.out.println("Deseja atacar? s/n");
 		String resposta = leInformacaoStr();
-		int numero_carta = 0;
+		int numeroCarta = 0;
 		boolean iteracao = true;
-		ArrayList <Carta> cartas_evocadas = encontraCartasEvocadas(atacante);
+		ArrayList <Carta> cartasEvocadas = encontraCartasEvocadas(atacante);
 		
 		
 		if(resposta.equals("s")) {
@@ -207,17 +260,17 @@ public class Tabuleiro {
 			System.out.println("Escolha o numero das cartas para colocar no campo de batalha!");
 			
 			while(iteracao) {
-				imprimeCartasEvocadas(cartas_evocadas);
+				imprimeCartasEvocadas(cartasEvocadas);
 				System.out.println("Pressione 0 para concluir");
-				numero_carta = (leInformacaoInt() - 1);
+				numeroCarta = (leInformacaoInt() - 1);
 				
-				if((numero_carta == -1) || (numero_carta > cartas_evocadas.size())) {
+				if((numeroCarta == -1) || (numeroCarta > cartasEvocadas.size())) {
 					iteracao = false;
 				}
 				
 				else  {
-					adcCartasCombate(cartas_evocadas.get(numero_carta), this.cartas_ataque);
-					rmvCartasEvocadas(cartas_evocadas.get(numero_carta), atacante);
+					adcCartasCombate(cartasEvocadas.get(numeroCarta), this.cartasAtaque);
+					rmvCartasEvocadas(cartasEvocadas.get(numeroCarta), atacante);
 				}	
 			}		
 		}
@@ -226,23 +279,23 @@ public class Tabuleiro {
 	private void turnoJogada(Jogador jogador) {
 		jogador.comprarCarta();
 		
-		boolean imprime_mao = true;													//Decisao para imprimir a mao do jogador
-		int carta_escolhida = 0;													//Numero da ca rta escolhida
-		ArrayList <Carta> cartas_evocadas = encontraCartasEvocadas(jogador);		//Mesa do jogador
+		boolean imprimeMao = true;												//Decisao para imprimir a mao do jogador
+		int cartaEscolhida = 0;													//Numero da ca rta escolhida
+		ArrayList <Carta> cartasEvocadas = encontraCartasEvocadas(jogador);		//Mesa do jogador
 		
-		while(imprime_mao) {
+		while(imprimeMao) {
 			imprimeJogador(jogador);
 			System.out.println("Informe o numero da carta que deseja jogar: ");
 			imprimeCartasdaMao(jogador);
 			System.out.println("PULAR: Digite 0");
-			carta_escolhida = (leInformacaoInt() - 1);
+			cartaEscolhida = (leInformacaoInt() - 1);
 					
-			if(carta_escolhida == -1) {
-				imprime_mao = false;
+			if(cartaEscolhida == -1) {
+				imprimeMao = false;
 			}
 			
-			else if(checaNumeroCartasEvocadas(cartas_evocadas.size(), 1) && (verificaCartaEvocavel(jogador.verCartasNaMao().get(carta_escolhida)))) {
-				Carta carta = jogador.verCartasNaMao().get(carta_escolhida);
+			else if(checaNumeroCartasEvocadas(cartasEvocadas.size(), 1) && (verificaCartaEvocavel(jogador.verCartasNaMao().get(cartaEscolhida)))) {
+				Carta carta = jogador.verCartasNaMao().get(cartaEscolhida);
 				if(consomeMana(jogador, carta)) {
 					adcCartasEvocadas(carta, jogador);
 					carta.cartaEvocada(this, jogador);
@@ -251,7 +304,7 @@ public class Tabuleiro {
 			}
 						
 			else {
-				Carta carta = jogador.verCartasNaMao().get(carta_escolhida);
+				Carta carta = jogador.verCartasNaMao().get(cartaEscolhida);
 				if(!verificaCartaEvocavel(carta)) {									//Se for um feitico, a carta podera ser jogada
 					if(consomeMana(jogador, carta)) {
 						adcCartasEvocadas(carta, jogador);
@@ -265,26 +318,26 @@ public class Tabuleiro {
 	
 	public ArrayList<Carta> encontraCartasEvocadas(Jogador jogador) {	
 		if(jogador.equals(this.jogador1)) {
-			return cartas_evocadas1;
+			return cartasEvocadas1;
 		}
 		else {
-			return cartas_evocadas2;
+			return cartasEvocadas2;
 		}		
 	}
 	
-	private boolean consomeMana(Jogador jogador, Carta carta_jogada) {
-		int custoMana = carta_jogada.verCustoMana();
+	private boolean consomeMana(Jogador jogador, Carta cartaJogada) {
+		int custoMana = cartaJogada.verCustoMana();
 		int manaJogador = jogador.verMana();
 		int manaFeitico = jogador.verManaFeitico();
-		boolean evocavel = verificaCartaEvocavel(carta_jogada);
+		boolean evocavel = verificaCartaEvocavel(cartaJogada);
 		if((custoMana <= manaJogador) && evocavel) {
-			int mana_atualizada = (manaJogador - custoMana);
-			jogador.definirMana(mana_atualizada);
+			int manaAtualizada = (manaJogador - custoMana);
+			jogador.definirMana(manaAtualizada);
 			return true;
 		}
 		else if( !evocavel && (custoMana <= manaFeitico)) {
-			int mana_atualizada = manaFeitico - custoMana;
-			jogador.definirManaFeitico(mana_atualizada);
+			int manaAtualizada = manaFeitico - custoMana;
+			jogador.definirManaFeitico(manaAtualizada);
 			return true;
 		}
 		else if(!evocavel && (custoMana <= (manaJogador + manaFeitico))){
@@ -296,29 +349,29 @@ public class Tabuleiro {
 		return false;
 	}
 		
-	private boolean verificaCartaEvocavel(Carta carta_recebida) {
-		if(carta_recebida instanceof Feiticos) {
+	private boolean verificaCartaEvocavel(Carta cartaRecebida) {
+		if(cartaRecebida instanceof Feiticos) {
 			return false;
 		}
 		return true;
 	}
 	
-	private Jogador jogadorAtacante(Jogador jogador_a, Jogador jogador_b) {	
-		if(jogador_a.verAtaque() == true) {
-			jogador_b.definirAtaque(true);
-			jogador_a.definirAtaque(false);
-			return jogador_b;
+	private Jogador jogadorAtacante(Jogador jogadorA, Jogador jogadorB) {	
+		if(jogadorA.verAtaque() == true) {
+			jogadorB.definirAtaque(true);
+			jogadorA.definirAtaque(false);
+			return jogadorB;
 		}
 		else {
-			jogador_b.definirAtaque(false);
-			jogador_a.definirAtaque(true);
-			return jogador_a;
+			jogadorB.definirAtaque(false);
+			jogadorA.definirAtaque(true);
+			return jogadorA;
 		}
 		
 	}
 	
-	private Jogador jogadorDefensor(Jogador jogador_ataq) {		
-		if(this.jogador1.equals(jogador_ataq)) {
+	private Jogador jogadorDefensor(Jogador jogadorAtaq) {		
+		if(this.jogador1.equals(jogadorAtaq)) {
 			return this.jogador2;
 		}
 		else {
@@ -367,16 +420,16 @@ public class Tabuleiro {
 		
 		System.out.println("");
 		
-		for(int i = 0; i < this.cartas_evocadas1.size(); i ++) {
-			System.out.print("|"+this.cartas_evocadas1.get(i).verNome()+" "+this.cartas_evocadas1.get(i).verVidaAtual() +" "+this.cartas_evocadas1.get(i).verDanoAtual()+"|   ");
+		for(int i = 0; i < this.cartasEvocadas1.size(); i ++) {
+			System.out.print("|"+this.cartasEvocadas1.get(i).verNome()+" "+this.cartasEvocadas1.get(i).verVidaAtual() +" "+this.cartasEvocadas1.get(i).verDanoAtual()+"|   ");
 		}
 		System.out.println("");
 		
 		System.out.println("======================================================================================================== Rodada: "+this.rodada);
 		
 		
-		for(int i = 0; i < this.cartas_evocadas2.size(); i ++) {
-			System.out.print("|"+this.cartas_evocadas2.get(i).verNome()+" "+this.cartas_evocadas2.get(i).verVidaAtual() +" "+this.cartas_evocadas2.get(i).verDanoAtual()+"|   ");
+		for(int i = 0; i < this.cartasEvocadas2.size(); i ++) {
+			System.out.print("|"+this.cartasEvocadas2.get(i).verNome()+" "+this.cartasEvocadas2.get(i).verVidaAtual() +" "+this.cartasEvocadas2.get(i).verDanoAtual()+"|   ");
 		}
 		System.out.println("");
 		System.out.println("");
@@ -387,6 +440,16 @@ public class Tabuleiro {
 		System.out.println("*****************************************************************************************************************");
 		System.out.println("");
 		
+	}
+	
+	private void imprimeBatalha(ArrayList<Carta> cartas) {
+		for(int i = 0; i < cartas.size(); i ++) {
+			System.out.println("Carta "+ (i+1));
+			System.out.println("Nome: "+cartas.get(i).verNome());
+			System.out.println("Vida "+cartas.get(i).verVidaAtual());
+			System.out.println("Dano: "+cartas.get(i).verDano());
+			System.out.println("");
+		}
 	}
 	
 	private void reiniciaMao(Jogador jogador) {
@@ -407,9 +470,9 @@ public class Tabuleiro {
 	}
 		
 	//Valida o numero de cartas na mesa.
-	private boolean checaNumeroCartasEvocadas(int numero_cartas, int tipo) {
+	private boolean checaNumeroCartasEvocadas(int numeroCartas, int tipo) {
 		if(tipo == 1) {
-			if(numero_cartas < 6) {
+			if(numeroCartas < 6) {
 				return true;
 			}
 			else {
@@ -418,7 +481,7 @@ public class Tabuleiro {
 		}
 		
 		else if(tipo == 0) {
-			if (numero_cartas > 0) {
+			if (numeroCartas > 0) {
 				return true;
 			}
 			else {
@@ -457,13 +520,13 @@ public class Tabuleiro {
 			jogador.definirManaFeitico(3);
 		}	
 		else if (jogador.verMana() > 0) {
-			int mana_acumulada = jogador.verManaFeitico() + jogador.verMana();
-			if(mana_acumulada > 3) {
+			int manaAcumulada = jogador.verManaFeitico() + jogador.verMana();
+			if(manaAcumulada > 3) {
 				jogador.definirManaFeitico(3);
 			}
 			
 			else {
-				jogador.definirManaFeitico(mana_acumulada);
+				jogador.definirManaFeitico(manaAcumulada);
 			}	
 		jogador.definirMana(0);
 		}

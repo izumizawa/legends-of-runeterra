@@ -115,8 +115,7 @@ public class Jogo {
 		deck2.adicionarCarta(combateUmAUm);
 		
 		Jogador jogador1 = new Jogador("Jogador 1", deck1);
-		Jogador jogador2 = new Jogador("Jogador 2", deck2);
-		
+		Jogador jogador2 = new Jogador("Jogador 2", deck2);		
 		Tabuleiro tabuleiro = new Tabuleiro(jogador1, jogador2);
 		
 		//Funcionamento do jogo
