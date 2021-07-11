@@ -101,6 +101,7 @@ public class Jogador {
 	
 	public void comprarCartaEspecifica(String nome) {
 		Carta carta = deck.pegarCartaEspecifica(nome);
+		deck.removerCarta(carta);
 		cartasNaMao.add(carta);
 	}
 	
