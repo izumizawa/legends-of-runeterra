@@ -1,7 +1,6 @@
 package ProjetoFinal.Tabuleiro;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Scanner;
 
 import ProjetoFinal.Carta.Carta;
